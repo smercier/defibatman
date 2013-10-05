@@ -1,4 +1,3 @@
-
 # Projet Défi Batman
 
 ### Défi
@@ -21,6 +20,7 @@ dynamiquement sur une carte les maternités de chauves-souris et de pouvoir y fa
 
  * [Installation](https://github.com/smercier/defibatman/wiki/Installation)
  * [API](https://github.com/smercier/defibatman/wiki/api)
+ * [Présentation](http://slid.es/reno88/defi-batman)
  * Application Démo (à venir) 
 
 # Quelques restrictions

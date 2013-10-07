@@ -11,7 +11,8 @@ application mobile pour recenser et localiser les colonies de Chauves-Souris.
 En moins de trois ans, plusieurs espèces de chauves-souris, ont connu un déclin supérieur à 90%. 
 La principale cause est une infection fongique qui s’est propagée au Québec en 2010. Pour mieux 
 suivre le déclin des populations de chauves-souris, le Ministère du Développement Durable, Environnement, 
-Faune et Parc (MDDEFP) aimerait avoir un moyen plus simple que de recueillir l’information par téléphone.
+Faune et Parc (MDDEFP) [sollicite la collaboration des citoyens](http://www.mddefp.gouv.qc.ca/infuseur/communique.asp?no=2538) pour trouver des colonies de chauves-souris, mais 
+aimerait avoir un moyen plus simple que de recueillir l’information par téléphone.
 Ce projet vise à doter cette organisation d’une application Web mobile simple qui permettrait de localiser 
 dynamiquement sur une carte les maternités de chauves-souris et de pouvoir y faire des recensements d’individu.
 

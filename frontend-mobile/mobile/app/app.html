@@ -1,0 +1,499 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <!--<meta name="viewport" content="width=device-width">-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- build:js scripts/vendor/modernizr.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:css styles/vendor/bootstrap.css -->
+        <link rel="stylesheet" href="styles/vendor/bootstrap/bootstrap.css">
+        <!-- endbuild -->
+
+        <!-- build:css bower_components/leaflet/dist/leaflet.css -->
+        <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+        <!-- endbuild -->
+</head>
+    <body>
+
+    <!-- Page content of course! -->
+    <!-- Custom styles for this template -->
+<style>
+  /* Move down content because we have a fixed navbar that is 50px tall */
+  body {
+    /*padding-top: 0px;*/
+    padding-bottom: 70px;
+  }
+
+  /* Set widths on the navbar form inputs since otherwise they're 100% wide */
+  .navbar-form input[type="text"],
+  .navbar-form input[type="password"] {
+    width: 180px;
+  }
+
+  /* Wrapping element */
+  /* Set some basic padding to keep content from hitting the edges */
+  .body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Responsive: Portrait tablets and up */
+  @media screen and (min-width: 768px) {
+    /* Remove padding from wrapping element since we kick in the grid classes here */
+    .body-content {
+      padding: 0;
+    }
+
+  }
+    .bottom-nav .navbar .nav{
+        float:left;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .bottom-nav .navbar .nav > li {
+        float: left;
+    }
+
+    .test{
+        bottom: 0;
+        margin-bottom: 0;
+        position: fixed;
+        right: 0;
+        left: 0;
+        /*z-index: 3;*/
+        border-radius: 0;
+        height:50px;
+        width: 100%;
+        background-color: #222;
+        text-align: center;
+    }
+
+
+    .leaflet-container .leaflet-control-attribution{
+        font-size: 8px;
+    }
+    #map-panel{
+        display: none;
+        z-index: 1;
+    }
+    
+    #login-panel{
+        display: none;
+
+        position: absolute;
+        float: left;
+        top:0;
+        bottom:0;
+        width:100%;
+        border:0;
+        padding:0;
+        z-index: 25;
+        background-color: #eee;
+    }
+
+    #login-panel .content{
+        padding: 10px;
+    }
+
+    #batman-toolbar{
+        position: absolute;
+        float: left;
+        bottom:0;
+        width:100%;
+        border:0;
+        padding:0;
+        z-index: 24;
+        background-color: #333;
+        height: 50px;
+        text-align: center;
+    }
+    
+    #batman-toolbar .btn{
+        /*height: 40px;*/
+        background-color: transparent;
+        /*font-size: 20px;*/
+    }
+
+    #batman-toolbar .butbar{
+        margin:0;
+        padding: 0;
+        border:1px solid #444;
+        font-size: 20px;
+    }
+    #batman-toolbar .butbar > li {
+        float: left;
+        list-style: none;
+        width: 32%;
+        border:0;
+        height:40px;
+        margin: 5px 0 0 0;
+        line-height: 38px;
+    }
+    #batman-toolbar .butbar > li > a{
+        color: #fff;
+        display: block;
+        border-right:1px solid #Fdd;
+        height: 38px;
+    }
+
+    #form-panel{
+        /*display: none;*/
+
+        position: absolute;
+        float: left;
+        bottom:50px;
+        width:100%;
+        border:0;
+        padding:0;
+        z-index: 2;
+        background-color: #333;
+        top:0;
+
+    }
+
+    #form-panel .form-submit-toolbar{
+        position: absolute;
+        float: left;
+        height:40px;
+        bottom:0;
+        width:100%;
+        border:0;
+        padding:0;
+        text-align: center;
+        padding: 0 2px;
+        /*z-index: 2;*/
+        display: none;
+    }
+
+    #form-panel .form-controls{
+        background-color: #f5f5f5;
+        position: absolute;
+        float: left;
+        top:0;
+        /*bottom:42px;*/
+        bottom: 0;
+        width:100%;
+        border:0;
+        padding:0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding:0 4px;
+    }
+
+    .form-controls input{
+        margin-bottom: 6px;
+    }
+
+</style>
+
+<div id="login-panel">
+    <div class="logo-login" style=" position:absolute; top:4px; left:50%;margin-left:-100px;">
+        <img src="images/bat-logo.png" style="" alt="Chauve-souris"/>
+    </div>
+    <div class="content" style="margin-top: 52px;">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="text-align: center;">
+                PROJET BATMAN
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form">
+                    <div class="well">
+                        <div class="input-group input-group-large">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                            <input type="text" class="form-control" placeholder="Courriel">
+                        </div>
+                        <div class="input-group input-group-large" style="margin-top: 8px;">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            <input type="password" class="form-control" id="inputPassword1" placeholder="Mot de passe">
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Se Connecter</button>
+                    <hr>
+                    <p>
+                        <button type="button" class="btn btn-default btn-small">Créer un compte</button>
+                        <button type="button" class="btn btn-default btn-small pull-right"><span class="glyphicon glyphicon-lock"></span> ?</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="batman-toolbar">
+    <ul class="butbar">
+    <li style="width: 2%;"></li>
+    <li><a href="#" title="Observations"><span class="glyphicon glyphicon-map-marker"></span></a></li>
+    <li><a href="#" title="Profil"><span class="glyphicon glyphicon-user"></span></a></li>
+    <li><a href="#" style="border-right: none;" title="À propos"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+    </ul>
+</div>
+
+<div id="map-panel">
+    <div class="map-toolbar" style="position: absolute; float: left;height:40px; bottom:50px;width:100%;border:0;padding:0;z-index: 2;">
+        <button type="button" class="btn btn-primary btn-lg btn-block">Enregistrer</button>
+    </div>
+    <div class="map-wrapper" style="position: absolute; float: left; top:0px;bottom:90px;width:100%;border:0;padding:0;z-index: 2;">
+        <div id="map-canvas" style="min-height:100%; background-color: #ccc;"></div>
+    </div>
+</div>
+
+<div id="form-panel">
+    <div class="form-controls">
+    <form role="form">
+
+        <div class="steps-site">
+            <p class="lead">Formulaire d'identification</p>
+            <hr>
+            <strong>Nombre de chauves-souris</strong>
+            <br>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    1 - 5
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    5 - 20
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    20 - 50
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    50 et +
+                </label>
+            </div>
+            <div id="field4-container" class="field f_100">
+                <label for="field4">
+                    Site
+                </label>
+                <select name="field4" id="field4" required="required">
+                    <option id="field4-1" value="Chalet">
+                        Chalet
+                    </option>
+                    <option id="field4-2" value="Entrepôt ou hangar">
+                        Entrepôt ou hangar
+                    </option>
+                    <option id="field4-3" value="Mine">
+                        Mine
+                    </option>
+                    <option name="field4" id="field4-4" value="Grange">
+                        Grange
+                    </option>
+                    <option name="field4" id="field4-5" value="Pont">
+                        Pont
+                    </option>
+                    <option name="field4" id="field4-6" value="Caverne ou grotte">
+                        Caverne ou grotte
+                    </option>
+                    <option name="field4" id="field4-7" value="Maison habitée">
+                        Maison habitée
+                    </option>
+                    <option name="field4" id="field4-8" value="Nichoir à Chauves-souris">
+                        Nichoir à Chauves-souris
+                    </option>
+                    <option name="field4" id="field4-9" value="Maison Abandonnée">
+                        Maison Abandonnée
+                    </option>
+                    <option name="field4" id="field4-10" value="Arbre">
+                        Arbre
+                    </option>
+                    <option name="field4" id="field4-11" value="Autre (précisez)">
+                        Autre (précisez)
+                    </option>
+                </select>
+            </div>
+            <div id="field5-container" class="field f_100">
+                <label for="field5">
+                    Habitat
+                </label>
+                <select name="field5" id="field5" required="required">
+                    <option id="field5-1" value="Champs agricoles">
+                        Champs agricoles
+                    </option>
+                    <option id="field5-2" value="Parc">
+                        Parc
+                    </option>
+                    <option id="field5-3" value="Bordure de Rivière">
+                        Bordure de Rivière
+                    </option>
+                    <option name="field5" id="field5-4" value="Zone Urbaine">
+                        Zone Urbaine
+                    </option>
+                    <option name="field5" id="field5-5" value="Bordure de route">
+                        Bordure de route
+                    </option>
+                    <option name="field5" id="field5-6" value="Forêt">
+                        Forêt
+                    </option>
+                    <option name="field5" id="field5-7" value="Milieu humide">
+                        Milieu humide
+                    </option>
+                    <option name="field5" id="field5-8" value="Bordure de lac">
+                        Bordure de lac
+                    </option>
+                    <option name="field5" id="field5-9" value="Friche">
+                        Friche
+                    </option>
+                    <option name="field5" id="field5-10" value="Autre (précisez)">
+                        Autre (précisez)
+                    </option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="image_1">Image (si disponible)</label>
+                <input type="file" class="form-control" id="image_1" placeholder="Image">
+            </div>
+            <hr>
+        </div>
+
+        <div class="steps-id">
+            <!--<p class="lead">Coordonnées</p>-->
+            <strong>Vos coordonnées (confidentiel et facultatif)</strong>
+            <input type="text" class="form-control" id="obs_nom" placeholder="Nom">
+            <input type="text" class="form-control" id="obs_adresse" placeholder="Adresse">
+            <input type="text" class="form-control" id="obs_ville" placeholder="Ville">
+            <input type="text" class="form-control" id="obs_codepostal" placeholder="Code Postal">
+            <input type="text" class="form-control" id="obs_tel" placeholder="Téléphone">
+            <br>
+            <strong>Propriétaire du site si connu</strong>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"> Identique à vos coordonnées?
+                </label>
+            </div>
+            <input type="text" class="form-control" id="_nom" placeholder="Nom">
+            <input type="text" class="form-control" id="_adresse" placeholder="Adresse">
+            <input type="text" class="form-control" id="_ville" placeholder="Ville">
+            <input type="text" class="form-control" id="_codepostal" placeholder="Code Postal">
+            <input type="text" class="form-control" id="_tel" placeholder="Téléphone">
+            <hr>
+        </div>
+
+        <div class="steps-validate">
+            <label for="commentaires">Autres commentaires</label>
+            <textarea class="form-control" id="commentaires" rows="3"></textarea>
+            <br>
+            <small><em>
+                Au cours des prochaines années, désirez-vous participer à un programme
+                de suivi des colonies des chauves-souris (p. ex. deux décomptes visuels
+                par année) ?
+            </em>
+            </small>
+            <br>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios_2" id="optionsRadios1_1" value="option1" checked>
+                    Oui
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios_2" id="optionsRadios2_2" value="option2">
+                    Non
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="optionsRadios_2" id="optionsRadios3_3" value="option2">
+                    Je ne sais pas
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-primary btn-block" value="Submit" onclick="Formvalidate()">Enregister</button>
+            </div>
+        </div>
+        <br>
+    </form>
+
+    </div>
+    <div class="form-submit-toolbar">
+        <button type="button" class="btn btn-primary btn-lg btn-block">Enregistrer</button>
+    </div>
+</div>
+
+    <!-- JS and analytics only. -->
+    <!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+//            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+//            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+//            g.src='//www.google-analytics.com/ga.js';
+//            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+
+        <!-- build:js scripts/main.js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="scripts/vendor/bootstrap/bootstrap.js"></script>
+        <script src="bower_components/leaflet/dist/leaflet.js"></script>
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+
+
+
+        <!-- build:js scripts/fastclick.js -->
+        <script src="scripts/fastclick.js"></script>
+        <script src="scripts/fastclick.example.js"></script>
+        <!-- endbuild -->
+
+    <script>
+        var map = L.map('map-canvas');
+
+
+        L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contribs, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, + <a href="http://cloudmade.com">CloudMade</a>'
+        }).addTo(map);
+
+        function onLocationFound(e) {
+            var radius = e.accuracy / 2;
+
+            L.marker(e.latlng).addTo(map)
+                    .bindPopup("Vous êtes à environ " + radius + " mètres de ce point").openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        }
+
+        function onLocationError(e) {
+            //alert(e.message);
+            console.log(e.message);
+        }
+
+        map.on('locationfound', onLocationFound);
+        map.on('locationerror', onLocationError);
+
+        map.locate({setView: true, maxZoom: 16});
+    </script>
+
+    </body>
+</html>

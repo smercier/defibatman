@@ -1,0 +1,415 @@
+<!DOCTYPE html><html lang="en"><head><title>app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="app"><meta name="groc-project-path" content="app.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">app.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="batman-server">BATMAN SERVER</h1>
+
+<p>NODEJS backend supporting the API.</p></div></div><div class="code"><div class="wrapper"><span class="c1">//Requirements</span>
+<span class="kd">var</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">ecstatic</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;ecstatic&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes/user&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+
+<span class="c1">//Environments</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">3000</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/views&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;view engine&#39;</span><span class="p">,</span> <span class="s1">&#39;ejs&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">favicon</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">logger</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">));</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">bodyParser</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">methodOverride</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">cookieParser</span><span class="p">(</span><span class="s1">&#39;jhwger98qwehewkjr#$#%^#____&#39;</span><span class="p">));</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">session</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">router</span><span class="p">);</span>
+
+<span class="c1">//Static Servers</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;/public&quot;</span><span class="p">,</span><span class="nx">ecstatic</span><span class="p">({</span> <span class="nx">root</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/public&#39;</span> <span class="p">}));</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;/doc&quot;</span><span class="p">,</span><span class="nx">ecstatic</span><span class="p">({</span> <span class="nx">root</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/doc&#39;</span> <span class="p">}));</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s2">&quot;/app&quot;</span><span class="p">,</span><span class="nx">ecstatic</span><span class="p">({</span> <span class="nx">root</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/app&#39;</span> <span class="p">}));</span>
+
+<span class="c1">//Development only</span>
+<span class="k">if</span> <span class="p">(</span><span class="s1">&#39;development&#39;</span> <span class="o">==</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">))</span> <span class="p">{</span>
+  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">errorHandler</span><span class="p">());</span>
+<span class="p">}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="api">API</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apisiteid">/api/site/:id</h3>
+
+<h3 id="site-by-id--endpoint-get">Site By ID // Endpoint (GET)</h3>
+
+<blockquote>
+  <p>'Content-Type': 'application/json'</p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/site/:id&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">[</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">],</span>
+        <span class="nx">batman</span><span class="p">,</span>
+        <span class="nx">siteId</span><span class="p">;</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">});</span>
+
+    <span class="c1">//Auth Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Unauthorized.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="nx">batman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nano&#39;</span><span class="p">)({</span> <span class="nx">url</span> <span class="o">:</span> <span class="s1">&#39;http://localhost:5984/batman&#39;</span><span class="p">,</span> <span class="nx">cookie</span><span class="o">:</span> <span class="s1">&#39;AuthSession=&#39;</span> <span class="o">+</span> <span class="nx">auth</span> <span class="p">});</span>
+
+    <span class="nx">siteId</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">;</span>
+    <span class="nx">batman</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">siteId</span><span class="p">,</span> <span class="p">{},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;&#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">reason</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+    <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (401):</p>
+
+<pre><code>$ {
+    "status": "err",
+       "code": 401,
+        "msg": "Unauthorized."
+}
+</code></pre>
+  
+  <p>Exemple de output (200)
+  api/site/55014ad9ce38169d296773554e001f48</p>
+
+<pre><code>$ {
+    "_id": "55014ad9ce38169d296773554e001f48",
+    "_rev": "4-d3a4803abd4cbbf13dfdef2efe7b0f72",
+    "type": "Feature",
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-73.5716, 45.52716]
+    },
+    "properties": {
+        "type": "cs:observation",
+        "site_structure": "Nichoir",
+        "site_habitat": "Parc",
+        "obs_nom": "Steflef",
+        "obs_adresse": "52 Sherbrooke",
+        "obs_ville": "Montréal",
+        "obs_codepostal": "G6H 4R6",
+        "obs_telephone": "418-444-5555",
+        "obs_courriel": "prof_lebrun@gmail.com",
+        "prop_nom": null,
+        "prop_adresse": null,
+        "prop_ville": null,
+        "prop_codepostal": null,
+        "prop_telephone": null,
+        "prop_courriel": null,
+        "id_user": "prof_lebrun@gmail.com",
+        "mat_photo": null,
+        "created_at": "2013/05/25 06:10:40 +0000"
+    }
+}
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apisite-list">/api/site [list]</h3>
+
+<h3 id="list-all-sites--endpoint-get">List All Sites // Endpoint (GET)</h3>
+
+<blockquote>
+  <p>'Content-Type': 'application/json'</p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/site/&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">[</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">],</span>
+        <span class="nx">batman</span><span class="p">,</span>
+        <span class="nx">features</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">});</span>
+
+    <span class="c1">//Auth Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Unauthorized.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="nx">batman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nano&#39;</span><span class="p">)({</span> <span class="nx">url</span> <span class="o">:</span> <span class="s1">&#39;http://localhost:5984/batman&#39;</span><span class="p">,</span> <span class="nx">cookie</span><span class="o">:</span> <span class="s1">&#39;AuthSession=&#39;</span> <span class="o">+</span> <span class="nx">auth</span> <span class="p">});</span>
+
+    <span class="nx">batman</span><span class="p">.</span><span class="nx">view</span><span class="p">(</span><span class="s1">&#39;cs_sites&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;&#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">reason</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="nx">body</span><span class="p">.</span><span class="nx">rows</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">doc</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+            <span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">doc</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        <span class="p">});</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">features</span><span class="p">);</span>
+    <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (401):</p>
+
+<pre><code>$ {
+    "status": "err",
+       "code": 401,
+        "msg": "Unauthorized."
+}
+</code></pre>
+  
+  <p>Exemple de output (200):</p>
+
+<pre><code>$ [{
+    "_id": "55014ad9ce38169d296773554e000aef",
+        "_rev": "1-b3d9e9b4e789ed8c69ff9c3e6d378c44",
+        "type": "Feature",
+        "geometry": {
+        "type": "Point",
+            "coordinates": [-73.5716, 45.52716]
+    },
+    "properties": {
+        "type": "cs:observation",
+            "site_structure": "Nichoir",
+            "site_habitat": "Parc",
+            "obs_nom": "Steflef",
+            "obs_adresse": "52 Sherbrooke",
+            "obs_ville": "Montréal",
+            "obs_codepostal": "G6H 4R6",
+            "obs_telephone": "418-444-5555",
+            "obs_courriel": "prof_lebrun@gmail.com",
+            "prop_nom": null,
+            "prop_adresse": null,
+            "prop_ville": null,
+            "prop_codepostal": null,
+            "prop_telephone": null,
+            "prop_courriel": null,
+            "id_user": "prof_lebrun@gmail.com",
+            "mat_photo": null
+    }
+},
+...
+]
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apisite">/api/site</h3>
+
+<h3 id="create-a-new-site--endpoint-post">Create a New Site // Endpoint (POST)</h3>
+
+<h5 id="autocreate-id">Autocreate _id</h5>
+
+<p>JSON</p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/site&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">[</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">],</span>
+        <span class="nx">batman</span><span class="p">,</span>
+        <span class="nx">feature</span><span class="p">;</span>
+
+    <span class="nx">req</span><span class="p">.</span><span class="nx">accepts</span><span class="p">(</span><span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">site</span><span class="p">)</span> <span class="p">{</span><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Aucun document site.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">site</span><span class="p">);</span>
+    <span class="nx">feature</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">site</span><span class="p">;</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">});</span>
+
+    <span class="c1">//Auth Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Unauthorized.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="nx">batman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nano&#39;</span><span class="p">)({</span> <span class="nx">url</span> <span class="o">:</span> <span class="s1">&#39;http://localhost:5984/batman&#39;</span><span class="p">,</span> <span class="nx">cookie</span><span class="o">:</span> <span class="s1">&#39;AuthSession=&#39;</span> <span class="o">+</span> <span class="nx">auth</span> <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO VÉRIFICATION DES DONNÉES</p></div></div><div class="code"><div class="wrapper">    <span class="nx">batman</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">feature</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;&#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">reason</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+    <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (401):</p>
+
+<pre><code>$ {
+    "ok":  false,
+    "err": "Unauthaurized User",
+  };
+</code></pre>
+  
+  <p>Exemple de output (200):</p>
+
+<pre><code>$ {
+    "ok": true,
+    "id": "55014ad9ce38169d296773554e001f48",
+    "rev": "4-d3a4803abd4cbbf13dfdef2efe7b0f72"
+  };
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apisiteidrev">/api/site/:id/:rev</h3>
+
+<h3 id="edit-a-site--endpoint-put">Edit a Site // Endpoint (PUT)</h3>
+
+<p><em>A new revision ... as per CouchDB</em></p>
+
+<blockquote>
+  <p>'Content-Type': 'application/json'</p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s1">&#39;/api/site/:id/:rev&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">[</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">],</span>
+        <span class="nx">batman</span><span class="p">,</span>
+        <span class="nx">feature</span><span class="p">,</span>
+        <span class="nx">_id</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span>
+        <span class="nx">_rev</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;rev&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">;</span>
+
+    <span class="nx">req</span><span class="p">.</span><span class="nx">accepts</span><span class="p">(</span><span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">});</span>
+
+    <span class="c1">//Body Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">site</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Aucun document.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Feature:&quot;</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">site</span><span class="p">);</span>
+    <span class="nx">feature</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">site</span><span class="p">;</span>
+
+    <span class="c1">//Auth Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Unauthorized.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="nx">batman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nano&#39;</span><span class="p">)({</span> <span class="nx">url</span> <span class="o">:</span> <span class="s1">&#39;http://localhost:5984/batman&#39;</span><span class="p">,</span> <span class="nx">cookie</span><span class="o">:</span> <span class="s1">&#39;AuthSession=&#39;</span> <span class="o">+</span> <span class="nx">auth</span> <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO VÉRIFICATION DES DONNÉES</p></div></div><div class="code"><div class="wrapper">    <span class="nx">feature</span><span class="p">.</span><span class="nx">_rev</span> <span class="o">=</span> <span class="nx">_rev</span><span class="p">;</span>
+    <span class="nx">feature</span><span class="p">.</span><span class="nx">_id</span> <span class="o">=</span>  <span class="nx">_id</span><span class="p">;</span>
+
+    <span class="nx">batman</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">feature</span><span class="p">,</span> <span class="nx">_id</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;&#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">reason</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+
+        <span class="c1">//Augmenting res</span>
+        <span class="nx">body</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="nx">body</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span><span class="p">;</span>
+
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+    <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (401):</p>
+
+<pre><code>$ {
+    "status": "err",
+       "code": 401,
+        "msg": "Conflict."
+}
+</code></pre>
+  
+  <p>Exemple de output (200):</p>
+
+<pre><code>$ {
+    "status": "ok",
+      "code": 200,
+        "ok": true,
+        "id": "55014ad9ce38169d296773554e001f48",
+       "rev": "4-d3a4803abd4cbbf13dfdef2efe7b0f72"
+  };
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apisiteidrev">/api/site/:id/:rev</h3>
+
+<h3 id="delete-a-site--endpoint-delete">Delete a Site // Endpoint (DELETE)</h3>
+
+<p><em>Delete a revision of a doc ... as per CouchDB</em></p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s1">&#39;/api/site/:id/:rev&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">[</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">],</span>
+        <span class="nx">batman</span><span class="p">,</span>
+        <span class="nx">_id</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span>
+        <span class="nx">_rev</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">[</span><span class="s1">&#39;rev&#39;</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">;</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">});</span>
+
+    <span class="c1">//Auth Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Unauthorized.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nx">batman</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nano&#39;</span><span class="p">)({</span> <span class="nx">url</span> <span class="o">:</span> <span class="s1">&#39;http://localhost:5984/batman&#39;</span><span class="p">,</span> <span class="nx">cookie</span><span class="o">:</span> <span class="s1">&#39;AuthSession=&#39;</span> <span class="o">+</span> <span class="nx">auth</span> <span class="p">});</span>
+
+    <span class="nx">batman</span><span class="p">.</span><span class="nx">destroy</span><span class="p">(</span><span class="nx">_id</span><span class="p">,</span> <span class="nx">_rev</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;&#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">reason</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+
+        <span class="c1">//Augmenting res</span>
+        <span class="nx">body</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="mi">200</span><span class="p">;</span>
+        <span class="nx">body</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span><span class="p">;</span>
+
+        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+    <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (200):</p>
+
+<pre><code>$ {
+    "status": "ok",
+      "code": 200,
+        "ok": true,
+        "id": "55014ad9ce38169d296773554e001f48",
+       "rev": "4-d3a4803abd4cbbf13dfdef2efe7b0f72"
+  };
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apilogin">/api/login</h3>
+
+<h3 id="login--endpoint-post">Login // Endpoint (POST)</h3>
+
+<blockquote>
+  <p>'Content-Type': 'application/json'</p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/login&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">nano</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nano&#39;</span><span class="p">)(</span><span class="s1">&#39;http://localhost:5984&#39;</span><span class="p">),</span>
+        <span class="nx">username</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">username</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span>
+        <span class="nx">userpass</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">userpass</span> <span class="o">||</span> <span class="s1">&#39;null&#39;</span><span class="p">,</span>
+        <span class="nx">role</span><span class="p">;</span>
+
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span>
+        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+    <span class="p">});</span>
+
+    <span class="nx">nano</span><span class="p">.</span><span class="nx">request</span><span class="p">({</span>
+            <span class="nx">method</span><span class="o">:</span> <span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+            <span class="nx">db</span><span class="o">:</span> <span class="s2">&quot;_session&quot;</span><span class="p">,</span>
+            <span class="nx">form</span><span class="o">:</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="o">:</span> <span class="nx">userpass</span> <span class="p">},</span>
+            <span class="nx">content_type</span><span class="o">:</span> <span class="s2">&quot;application/x-www-form-urlencoded; charset=utf-8&quot;</span>
+        <span class="p">},</span>
+        <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">body</span><span class="p">,</span> <span class="nx">headers</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;&#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">reason</span> <span class="o">+</span> <span class="s1">&#39;&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+            <span class="c1">//Send CouchDB&#39;s cookie right on through to the client</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><em>The CouchDB cookie name is AuthSession</em></p></div></div><div class="code"><div class="wrapper">            <span class="k">if</span> <span class="p">(</span><span class="nx">headers</span> <span class="o">&amp;&amp;</span> <span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;set-cookie&#39;</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">res</span><span class="p">.</span><span class="nx">cookie</span><span class="p">(</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;set-cookie&#39;</span><span class="p">]);</span>
+            <span class="p">}</span>
+
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+            <span class="c1">//Augmenting res with roles.</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;ok&quot;,&quot;code&quot;:200,&quot;msg&quot;:&quot;LOGGED_IN&quot;,&quot;role&quot;:&#39;</span><span class="o">+</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span> <span class="nx">body</span><span class="p">.</span><span class="nx">roles</span> <span class="p">)</span> <span class="o">+</span><span class="s1">&#39;}&#39;</span><span class="p">);</span>
+        <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (401):</p>
+
+<pre><code>$ {
+    "status": "err",
+       "code": 401,
+        "msg": "Name or password is incorrect."
+}
+</code></pre>
+  
+  <p>Exemple de output (200):</p>
+
+<pre><code>$ {
+    "status": "ok",
+      "code": 200,
+       "msg": "LOGGED_IN"
+}
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apilogout">/api/logout</h3>
+
+<h3 id="logout--endpoint-get">Logout // Endpoint (GET)</h3></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/logout&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><em>The CouchDB cookie name is AuthSession</em></p></div></div><div class="code"><div class="wrapper">    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span>
+        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+    <span class="p">});</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">clearCookie</span><span class="p">(</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;ok&quot;,&quot;code&quot;:200,&quot;msg&quot;:&quot;LOGGED_OUT&quot;}&#39;</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple de output (200):</p>
+
+<pre><code>$ {
+    "status": "ok",
+      "code": 200,
+       "msg": "LOGGED_OUT"
+}
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="apiadmin">/api/admin</h3>
+
+<h3 id="administartion--endpoint-get">Administartion // Endpoint (GET)</h3>
+
+<h4 id="todo">TODO</h4></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/admin&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">auth</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="p">[</span><span class="s1">&#39;AuthSession&#39;</span><span class="p">],</span>
+        <span class="nx">batman</span><span class="p">;</span>
+
+    <span class="nx">req</span><span class="p">.</span><span class="nx">accepts</span><span class="p">(</span><span class="s1">&#39;application/json&#39;</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">});</span>
+
+    <span class="c1">//Auth Check</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">auth</span><span class="p">)</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">401</span><span class="p">,</span> <span class="s1">&#39;{&quot;status&quot;:&quot;err&quot;,&quot;code&quot;:401,&quot;msg&quot;:&quot;Unauthorized.&quot;}&#39;</span><span class="p">);</span> <span class="k">return</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="c1">//Role Check</span>
+    <span class="c1">//Check with stored role or with a _session on CouchDB</span>
+    <span class="c1">//TODO</span>
+<span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="dynamic-content-via-templating-mustache">DYNAMIC CONTENT VIA TEMPLATING (MUSTACHE)</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="admin-get">/admin (GET)</h3>
+
+<h3 id="show-admin-ui">Show Admin UI</h3>
+
+<h4 id="todo">TODO</h4></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;TODO&#39;</span><span class="p">);</span>
+<span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="-aka-home-get">/ aka HOME (GET)</h3>
+
+<h3 id="show-main-ui">Show Main UI</h3>
+
+<h4 id="todo">TODO</h4></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;TODO HOME SWEET HOME&#39;</span><span class="p">);</span>
+<span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="server-up-">SERVER UP ^^</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Express server listening on port &#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">));</span>
+<span class="p">});</span></div></div></div></div></body></html>

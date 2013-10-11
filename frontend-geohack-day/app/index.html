@@ -1,0 +1,606 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- build:js scripts/vendor/modernizr.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:css styles/vendor/bootstrap.css -->
+        <link rel="stylesheet" href="styles/vendor/bootstrap/bootstrap.css">
+        <!-- endbuild -->
+
+        <link rel="stylesheet" href="styles/leaflet.css" />
+        <link rel="stylesheet" href="styles/leaflet.usermarker.css" />
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="styles/leaflet.ie.css" />
+            <link rel="stylesheet" href="styles/L.Control.Locate.ie.css" />
+        <![endif]-->
+</head>
+    <body>
+
+    <!-- Page content of course! -->
+    <!-- Custom styles for this template -->
+<style>
+  /* Move down content because we have a fixed navbar that is 50px tall */
+  body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+  }
+
+  /* Set widths on the navbar form inputs since otherwise they're 100% wide */
+  .navbar-form input[type="text"],
+  .navbar-form input[type="password"] {
+    width: 180px;
+  }
+
+  /* Wrapping element */
+  /* Set some basic padding to keep content from hitting the edges */
+  .body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Responsive: Portrait tablets and up */
+  @media screen and (min-width: 768px) {
+    /* Let the jumbotron breathe */
+    .jumbotron {
+      margin-top: 20px;
+    }
+    /* Remove padding from wrapping element since we kick in the grid classes here */
+    .body-content {
+      padding: 0;
+    }
+  }
+
+
+</style>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </a>
+    <a class="navbar-brand" href="#">Batman Project</a>
+    <div class="nav-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#species">Le SMB</a></li>
+<!--         <li><a href="#contact">Le syndrôme du museau blanc</a></li> -->
+        <li class="dropdown">
+          <a href="#species" class="dropdown-toggle" data-toggle="dropdown">Les espèces concernées<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">La petite chauve-souris</a></li>
+            <li><a href="#">La chauve-souris nordique</a></li>
+            <li><a href="#">La grande chauve-souris brune</a></li>
+            <li><a href="#">La pipistrelle de l'est</a></li>
+            <li><a href="#">La chauve-souris pigmée</a></li>
+
+<!--             <li class="divider"></li>
+            <li class="nav-header">Nav header</li>
+            <li><a href="#">Separated link</a></li>
+            <li><a href="#">One more separated link</a></li> -->
+          </ul>
+        </li>
+      </ul>
+      <form class="navbar-form form-inline pull-right">
+        <input type="text" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
+
+
+
+  <div class="body-content">
+
+        <!-- Example row of columns -->
+<!--     <div class="row">
+      <div class="col col-lg-4">
+        <h2>Pourquoi</h2>
+        <p>Il existe 8 espèces de Chauves-souris au Québec : 5 sont résidentes, 3 sont migratrices.
+Les 5 espèces de chauves-souris résidentes...</p>
+        <p><a class="btn btn-default" href="#">Afficher &raquo;</a></p>
+      </div>
+      <div class="col col-lg-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
+     </div>
+      <div class="col col-lg-4">
+        <h2>Heading</h2>
+        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
+      </div>
+    </div>
+
+    <hr> -->
+
+    <div class="container">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron" id="map" style="height:600px;">
+        </p><p><span id="status"></span></p>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron" id="Form_mater">
+        <p><span id="status">
+                  <div class="TTWForm-container">
+           
+           
+           <div id="form-title" class="form-title field">
+                <h3>
+                     Renseigner une nouvelle maternité de Chauves-Souris
+                </h3>
+           </div>
+           
+           
+           <form action="process_form.php" class="TTWForm" method="post" novalidate="">
+                               
+                <div id="field7-container" class="field f_100">
+                     <label for="field7">
+                          Nombre d'individus
+                     </label>
+                     <select name="field7" id="field7" required="required">
+                          <option id="field7-1" value="1">
+                               1
+                          </option>
+                          <option id="field7-2" value="2 à 5">
+                               2 à 5
+                          </option>
+                          <option id="field7-3" value="6 à 10">
+                               6 à 10
+                          </option>
+                          <option name="field7" id="field7-4" value="11 à 50">
+                               11 à 50
+                          </option>
+                          <option name="field7" id="field7-5" value="51 à 100">
+                               51 à 100
+                          </option>
+                          <option name="field7" id="field7-6" value="101 à 200">
+                               101 à 200
+                          </option>
+                          <option name="field7" id="field7-7" value="Plus de 200">
+                               Plus de 200
+                          </option>
+                     </select>
+                </div>
+                
+                
+                <div id="field4-container" class="field f_100">
+                     <label for="field4">
+                          Type de Structure de la colonie
+                     </label>
+                     <select name="field4" id="field4" required="required">
+                          <option id="field4-1" value="Chalet">
+                               Chalet
+                          </option>
+                          <option id="field4-2" value="Entrepôt ou hangar">
+                               Entrepôt ou hangar
+                          </option>
+                          <option id="field4-3" value="Mine">
+                               Mine
+                          </option>
+                          <option name="field4" id="field4-4" value="Grange">
+                               Grange
+                          </option>
+                          <option name="field4" id="field4-5" value="Pont">
+                               Pont
+                          </option>
+                          <option name="field4" id="field4-6" value="Caverne ou grotte">
+                               Caverne ou grotte
+                          </option>
+                          <option name="field4" id="field4-7" value="Maison habitée">
+                               Maison habitée
+                          </option>
+                          <option name="field4" id="field4-8" value="Nichoir à Chauves-souris">
+                               Nichoir à Chauves-souris
+                          </option>
+                          <option name="field4" id="field4-9" value="Maison Abandonnée">
+                               Maison Abandonnée
+                          </option>
+                          <option name="field4" id="field4-10" value="Arbre">
+                               Arbre
+                          </option>
+                          <option name="field4" id="field4-11" value="Autre (précisez)">
+                               Autre (précisez)
+                          </option>
+                     </select>
+                </div>
+                
+                
+                <div id="field5-container" class="field f_100">
+                     <label for="field5">
+                          Type d'habitat
+                     </label>
+                     <select name="field5" id="field5" required="required">
+                          <option id="field5-1" value="Champs agricoles">
+                               Champs agricoles
+                          </option>
+                          <option id="field5-2" value="Parc">
+                               Parc
+                          </option>
+                          <option id="field5-3" value="Bordure de Rivière">
+                               Bordure de Rivière
+                          </option>
+                          <option name="field5" id="field5-4" value="Zone Urbaine">
+                               Zone Urbaine
+                          </option>
+                          <option name="field5" id="field5-5" value="Bordure de route">
+                               Bordure de route
+                          </option>
+                          <option name="field5" id="field5-6" value="Forêt">
+                               Forêt
+                          </option>
+                          <option name="field5" id="field5-7" value="Milieu humide">
+                               Milieu humide
+                          </option>
+                          <option name="field5" id="field5-8" value="Bordure de lac">
+                               Bordure de lac
+                          </option>
+                          <option name="field5" id="field5-9" value="Friche">
+                               Friche
+                          </option>
+                          <option name="field5" id="field5-10" value="Autre (précisez)">
+                               Autre (précisez)
+                          </option>
+
+                     </select>
+                </div>
+                
+                <div id="field20-container" class="field f_100">
+                     <label for="field20">
+                          Autre
+                     </label>
+                     <input type="text" name="field20" id="field20">
+                </div>
+
+                <div id="field8-container" class="field f_100">
+                     <label for="field8">
+                          Identification du propriétaire du site (si connu ou différent de l’observateur)
+                     </label>
+                     <input type="text" name="field8" id="field8" required="required">
+                </div>
+                
+                
+                <div id="field11-container" class="field f_100">
+                     <label for="field11">
+                          Nom
+                     </label>
+                     <input type="text" name="field11" id="field11" required="required">
+                </div>
+                
+                
+                <div id="field12-container" class="field f_100">
+                     <label for="field12">
+                          Adresse
+                     </label>
+                     <input type="text" name="field12" id="field12" required="required">
+                </div>
+                
+                
+                <div id="field13-container" class="field f_100">
+                     <label for="field13">
+                          Ville
+                     </label>
+                     <input type="text" name="field13" id="field13" required="required">
+                </div>
+                
+                
+                <div id="field14-container" class="field f_100">
+                     <label for="field14">
+                          Code Postal
+                     </label>
+                     <input type="text" name="field14" id="field14" required="required">
+                </div>
+                
+                
+                <div id="field15-container" class="field f_100">
+                     <label for="field15">
+                          Téléphone
+                     </label>
+                     <input type="text" name="field15" id="field15" required="required">
+                </div>
+                
+                
+                <div id="field16-container" class="field f_100">
+                     <label for="field16">
+                          Courriel
+                     </label>
+                     <input type="email" name="field16" id="field16" required="required">
+                </div>
+                
+                
+                <div id="field18-container" class="field f_100 radio-group required">
+                     <label for="field18-1">
+                          Au cours des prochaines années, désirez-vous participer à un programme
+                          de suivi des colonies des chauves-souris (p. ex. deux décomptes visuels
+                          par année) ?
+                     </label>
+                     
+                     
+                     <div class="option clearfix">
+                          <input type="radio" name="field18" id="field18-1" value="Oui">
+                          <span class="option-title">
+                               Oui
+                          </span>
+                     </div>
+                     
+                     
+                     <div class="option clearfix">
+                          <input type="radio" name="field18" id="field18-2" value="Non">
+                          <span class="option-title">
+                               Non
+                          </span>
+                     </div>
+                     
+                     
+                     <div class="option clearfix">
+                          <input type="radio" name="field18" id="field18-3" value="Je ne sais pas">
+                          <span class="option-title">
+                               Je ne sais pas
+                          </span>
+                     </div>
+                </div>
+                
+                
+                <div id="field19-container" class="field f_100">
+                     <label for="field19">
+                          Autres commentaires
+                     </label>
+                     <textarea rows="5" cols="20" name="field19" id="field19" required="required"></textarea>
+                </div>
+                
+                <div><p></p></div>
+                <div id="form-submit" class="field f_100 clearfix submit">
+                      <p><a class="btn btn-default" href="#" type="submit" value="Submit" onclick="Formvalidate()">Envoyer &raquo;</a></p>
+                </div>
+           </form>
+      </div>
+        </span></p>
+
+      </div>
+
+
+    <footer>
+      <p>Défi GéoHack Montréal 2013</p>
+    </footer>
+  </div>
+
+</div> <!-- /container -->
+
+
+    <!-- JS and analytics only. -->
+    <!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src='//www.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+
+        <!-- build:js scripts/main.js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="scripts/vendor/bootstrap/bootstrap.js"></script>
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+
+
+        <!-- build:js scripts/async-local-storage.js -->
+        <script src="scripts/async.localStorage.js"></script>
+        <script src="scripts/async.localStorage.examples.js"></script>
+        <!-- endbuild -->
+
+
+        <!-- build:js scripts/fastclick.js -->
+        <script src="scripts/fastclick.js"></script>
+        <script src="scripts/fastclick.example.js"></script>
+        <!-- endbuild -->
+
+        <script src="scripts/leaflet.js"></script>
+        <script src="scripts/leaflet.usermarker.js"></script>
+
+
+        <script type="text/javascript">
+
+
+            form = $('#Form_mater');
+            form.hide();
+
+            var firstpoint = false;
+            var marker, maternite;
+
+            //create the map and set its initial view
+            var map = L.map('map').setView([45.511759,-73.570107], 16);
+            bounds = new L.LatLngBounds;
+
+            var list_maternite = Array();
+            var markersMaternite = Array();
+
+            //---- extension icones marker ---------
+            //Extend the Default marker class
+
+            var RedIcon = L.Icon.Default.extend({
+            options: {
+              iconUrl: 'scripts/images/marker-icon-red.png' 
+            }
+            });
+            var redIcon = new RedIcon();
+
+            //------ liste de test de maternites ------------
+
+              var mater1 = {
+                id: 'mater1',
+                lat: 45.51200097493241,
+                lng: -73.57393741607666
+              }
+              list_maternite.push(mater1);
+
+              var mater2 = {
+                id: 'mater2',
+                lat: 45.51218141474534,
+                lng: -73.56179237365723
+              }
+              list_maternite.push(mater2);
+            //-----------------------------------------------
+
+            //add the tile layer to the map
+            var layer = L.tileLayer(
+             'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png',
+            {
+                attribution: 'Map data © OpenStreetMap contributors'
+            }).addTo(map);
+
+            map.locate({watch: true, locate: true, setView: true, enableHighAccuracy:true});//,timeout:15000,maximumAge:20000});
+            map.on('locationfound', onLocationFound);
+            map.on('click', new_maternite);
+
+            for (var i = 0; i < list_maternite.length; i++) {
+              
+              var Point = new L.LatLng(list_maternite[i].lat,list_maternite[i].lng);
+                    
+              var marker = L.marker(Point,{icon: redIcon});                     
+              marker.feature = list_maternite[i];
+              marker.bindPopup(marker.feature.id);
+
+              markersMaternite.push(marker);
+
+              // ajout du markers au limites bounds de la map
+              bounds.extend(Point); 
+              // recentrage de la map sur les markers
+              map.fitBounds(bounds, {reset: true, animate: false});
+            };
+
+            // creation d'un layer contenant tous les markers
+            markersLayer = L.featureGroup(markersMaternite);
+            // ajout des markers à la map
+            markersLayer.addTo(map);
+
+
+            function onLocationFound(position) {
+
+              map.setView( position.latlng, 15);
+              
+              // if first gps point 
+              if (!firstpoint) {
+                // création du marker de position de l'utilisateur
+                marker = new L.userMarker(position.latlng, {pulsing: true, smallIcon:true});
+                firstpoint = true;
+              }
+
+              marker.setAccuracy(position.accuracy);
+              marker.addTo(map);
+
+            }
+
+            function new_maternite(e) {
+
+              form.show();
+
+              if ($.isEmptyObject(maternite)) {
+                  maternite = new L.marker(e.latlng).addTo(map);
+              }else {
+                  maternite.setLatLng(e.latlng);
+              }
+
+            }
+
+            function Formvalidate() {
+              var nb = $("#field7").val();
+              var struct = $("#field4").val();
+              if ($("#field5").val() == 'Autre (précisez)') {
+                var habitat = $("#field20").val();
+              }else{
+                  var habitat = $("#field5").val();
+                }
+              var proprietaire = new Object();
+              proprietaire.nom = $("#field11").val();
+              proprietaire.adresse = $("#field12").val();
+              proprietaire.ville = $("#field13").val();
+              proprietaire.codepos = $("#field14").val();
+              proprietaire.tel = $("#field15").val();
+              proprietaire.courriel = $("#field16").val();
+              var particip = $("#field18").val();
+              var comm = $("#field19").val();
+
+              var MaterJSON =
+              {
+                 "type_structure": struct,
+                 "type_habitat": habitat,
+                 // "obs_nom": "Simon Mercier",
+                 // "obs_adresse": "1631 matane-sur-mer",
+                 // "obs_ville": "Matane",
+                 // "obs_codepostal": "G4W 3M6",
+                 // "obs_telephone": "418-562-3755",
+                 // "obs_courriel": "mercier.simon@gmail.com",
+                 "prop_nom": proprietaire.nom,
+                 "prop_adresse": proprietaire.adresse,
+                 "prop_ville": proprietaire.ville,
+                 "prop_codepostal": proprietaire.codepos,
+                 "prop_telephone": proprietaire.tel,
+                 "prop_courriel": proprietaire.courriel,
+                 // "mat_geo_lcc_y": null,
+                 // "mat_geo_lcc_x": null,
+                 "mat_geo_lat": maternite.getLatLng().lat,
+                 "mat_geo_long": maternite.getLatLng().lng,
+                 // "obs_user": "mercier.simon@gmail.com",
+                 "mat_photo": null,
+                 "type": "maternite"
+              }
+
+              var _url = "localhost:3000/bat";
+                $.ajax({
+                    url: _url,
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: MaterJSON,
+                    dataType: 'json'
+                });
+            }
+
+//              var client = new XMLHttpRequest();
+//
+//              client.open("PUT", url, false);
+//
+//              client.setRequestHeader("Content-Type", "application/json");
+//
+//              client.send();
+//
+//              if (client.status == 200)
+//                  alert("The request succeeded!\n\nThe response representation was:\n\n" + client.responseText)
+//              else
+//                  alert("The request did not succeed!\n\nThe response status was: " + client.status + " " + client.statusText + ".");
+//            }
+
+
+        </script>
+
+
+</body>
+</html>

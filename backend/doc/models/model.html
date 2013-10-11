@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><title>models/model</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="models/model"><meta name="groc-project-path" content="models/model.js"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">models/model.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="batman-modles">BATMAN MODÈLES</h1>
+
+<h3 id="json-couchdb">JSON COUCHDB</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><em>cs pour chauves-souris.</em>
+<em>Utilisation en prefix ou structuration de document design CouchDB</em></p>
+
+<hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="user">USER</h3>
+
+<h3 id="utilisation-de-la-gestion-des-utilisateurs-de-couchdb">Utilisation de la gestion des utilisateurs de CouchDB</h3>
+
+<p><em>Utilisation du courriel comme clef unique</em></p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">user_model</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;org.couchdb.user:email&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;roles&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;cs:reporter&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;plaintext_password&quot;</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><blockquote>
+  <p>Exemple d'utilisateur:</p>
+
+<pre><code>$ {
+          "_id": "org.couchdb.user:prof.lebrun@gmail.com",
+         "name": "prof.lebrun@gmail.com",
+         "type": "user",
+        "roles": ["cs:reporter"],
+     "password": "oss118"
+  }
+</code></pre>
+</blockquote>
+
+<hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observations">OBSERVATIONS</h3>
+
+<h3 id="sites-dobservations-en-format-geojson">Sites d'observations en format GeoJSON</h3>
+
+<p><em>Clef unique (_id) générée par CouchDB</em>
+<em>Clef de révision (_rev) générée par CouchDB</em>
+<em>"type": "cs:observation" comme type de doc.</em></p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">site_model</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;ury78325y3krwhrejfds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_rev&quot;</span><span class="o">:</span> <span class="s2">&quot;jmfhdgdjgdagf&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;geometry&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">73.5716</span><span class="p">,</span> <span class="mf">45.52716</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;properties&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;cs:observation&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;site_structure&quot;</span><span class="o">:</span> <span class="s2">&quot;Nichoir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;site_habitat&quot;</span><span class="o">:</span> <span class="s2">&quot;Parc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;obs_nom&quot;</span><span class="o">:</span> <span class="s2">&quot;Steflef&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;obs_adresse&quot;</span><span class="o">:</span> <span class="s2">&quot;52 Sherbrooke&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;obs_ville&quot;</span><span class="o">:</span> <span class="s2">&quot;Montréal&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;obs_codepostal&quot;</span><span class="o">:</span> <span class="s2">&quot;G6H 4R6&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;obs_telephone&quot;</span><span class="o">:</span> <span class="s2">&quot;418-444-5555&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;obs_courriel&quot;</span><span class="o">:</span> <span class="s2">&quot;prof_lebrun@gmail.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prop_nom&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;prop_adresse&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;prop_ville&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;prop_codepostal&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;prop_telephone&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;prop_courriel&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;id_user&quot;</span><span class="o">:</span> <span class="s2">&quot;prof_lebrun@gmail.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;mat_photo&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="s2">&quot;created_at&quot;</span><span class="o">:</span> <span class="s2">&quot;2013/05/25 06:10:40 +0000&quot;</span>
+    <span class="p">}</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="validation-des-champs-du-formulaire">VALIDATION DES CHAMPS DU FORMULAIRE</h3>
+
+<h3 id="todo">TODO</h3></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">validation_model</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;cs:validation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;obs_nom&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s2">&quot;minlength&quot;</span><span class="o">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">&quot;maxlength&quot;</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s2">&quot;pattern&quot;</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;trim&quot;</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="sites">SITES</h3>
+
+<h3 id="liste-des-valeurs-possibles-pour-les-structures-et-habitats-associes--un-site-dobservation">Liste des valeurs possibles pour les structures et habitats associées à un site d'observation</h3>
+
+<p><em>Utilisation pour les select box</em></p></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">site_model</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;cs:site&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;structures&quot;</span><span class="o">:</span><span class="p">[</span>
+        <span class="s2">&quot;Chalet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Entrepôt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Hangar&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Mine&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Grange&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Pont&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Caverne ou grotte&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Maison habitée&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Nichoir à chauves-sourir&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Maison abandonnée&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Arbre&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Autre&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;habitats&quot;</span><span class="o">:</span><span class="p">[</span>
+        <span class="s2">&quot;Champs agricoles&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Parc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Forêt&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Bordure de lac&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Bordure de rivière&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Bordure de route&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Milieu humide&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Friche&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Zone urbaine&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Autre&quot;</span>
+    <span class="p">]</span>
+<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="batman-views">BATMAN VIEWS</h3>
+
+<h3 id="batman-design-documents">batman design documents</h3>
+
+<h4 id="batman_designcs_sites">batman/<em>design/cs</em>sites</h4></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">cs_sites</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;_design/cs_sites&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_rev&quot;</span><span class="o">:</span> <span class="s2">&quot;8-8fa36a5ae0c483829bde52ead143b3fb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;language&quot;</span><span class="o">:</span> <span class="s2">&quot;javascript&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;views&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;all&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="s2">&quot;function(doc) {\n  if(doc.properties.type == \&quot;cs:observation\&quot;){\n    emit(null,doc);\n  }\n}&quot;</span>
+            <span class="p">},</span>
+        <span class="s2">&quot;ll&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="s2">&quot;function(doc) {\n  if(doc.properties.type == \&quot;cs:observation\&quot;){\n    emit(null, doc.geometry.coordinates);\n  }\n}&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span></div></div></div></div></body></html>

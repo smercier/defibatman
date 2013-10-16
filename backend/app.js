@@ -2,17 +2,46 @@
 // ### NODEJS backend supporting the API.
 
 //Requirements
-var express = require('express');
-var ecstatic = require('ecstatic');
-var user = require('./routes/user');
-var http = require('http');
-var path = require('path');
-var app = express();
+var express = require('express')
+    ,ecstatic = require('ecstatic')
+    ,user = require('./routes/user')
+    ,http = require('http')
+    ,path = require('path')
+    //,cons = require('consolidate')
+    //,mustache = require('mustache')
+    ,app = express();
+
+//var tmpl = {
+//    compile: function (source, options) {
+//        if (typeof source == 'string') {
+//            return function(options) {
+//                options.locals = options.locals || {};
+//                options.partials = options.partials || {};
+//                if (options.body) // for express.js > v1.0
+//                    locals.body = options.body;
+//                return mustache.to_html(
+//                    source, options.locals, options.partials);
+//            };
+//        } else {
+//            return source;
+//        }
+//    },
+//    render: function (template, options) {
+//        template = this.compile(template, options);
+//        return template(options);
+//    }
+//};
+
+
 
 //Environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+//Templating engine
+//app.engine('html', cons.mustache);
+
+//app.set('view engine', 'ejs');
+//app.set('view engine', 'html');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -24,16 +53,31 @@ app.use(app.router);
 //Static Servers
 app.use("/public",ecstatic({ root: __dirname + '/public' }));
 app.use("/doc",ecstatic({ root: __dirname + '/doc' }));
-app.use("/app",ecstatic({ root: __dirname + '/app' }));
+//app.use("/app",ecstatic({ root: __dirname + '/app' }));
+app.use("/dist",ecstatic({ root: __dirname + '/dist', cache: 0}));
+
+
+//Error Handling
+app.use(function(err, req, res, next) {
+    //do logging and user-friendly error message display
+    console.log(err);
+    res
+        .set({'Content-Type': 'application/json'})
+        .send(err.status, {
+            code:err.status,
+            msg: err.message,
+            status:'err',
+            stack:err.stack
+        });
+});
 
 //Development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
+//if ('development' == app.get('env')) {
+//  app.use(express.errorHandler());
+//}
 // ***
 
 // ## API
-
 // ### /api/site/:id
 // ### Site By ID // Endpoint (GET)
 // > 'Content-Type': 'application/json'
@@ -51,7 +95,16 @@ app.get('/api/site/:id', function (req, res) {
 
     siteId = req.params['id'] || 'null';
     batman.get(siteId, {}, function(err, body) {
-        if (err) { res.send(401, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
+
+        if (err) {
+            var output = {
+                status: "err",
+                code: 401,
+                msg: err.reason
+            };
+            res.send(401, output);
+            return;
+        }
         console.log(body);
         res.send(200, body);
     });
@@ -186,10 +239,12 @@ app.post('/api/site',function(req, res){
 
     //Auth Check
     if (!auth) { res.send(401, '{"status":"err","code":401,"msg":"Unauthorized."}'); return; }
-
     batman = require('nano')({ url : 'http://localhost:5984/batman', cookie: 'AuthSession=' + auth });
 
+    console.log(auth);
     // TODO VÉRIFICATION DES DONNÉES
+    //Complete Feature infos
+    feature.properties.created_at = Date.now();
 
     batman.insert(feature, null, function(err, body) {
         if (err) { res.send(401, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
@@ -428,6 +483,18 @@ app.get('/admin', function(req,res){
 // #### TODO
 app.get('/', function(req,res){
     res.send(200, 'TODO HOME SWEET HOME');
+
+//    res.render("index.html", {
+//        locals: {
+//            message: "Hello World!",
+//            items: ["one", "two", "three"]
+//        },
+//        partials: {
+//            foo: "<h1>{{message}}</h1>",
+//            bar: "<ul>{{#items}}<li>{{.}}</li>{{/items}}</ul>"
+//        }
+//    });
+
 });
 // ***
 

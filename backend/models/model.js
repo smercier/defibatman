@@ -43,6 +43,8 @@ var site_model = {
         "type": "cs:observation",
         "site_structure": "Nichoir",
         "site_habitat": "Parc",
+        "site_individus": "Parc",
+        "site_image": null,
         "obs_nom": "Steflef",
         "obs_adresse": "52 Sherbrooke",
         "obs_ville": "Montréal",
@@ -55,8 +57,9 @@ var site_model = {
         "prop_codepostal": null,
         "prop_telephone": null,
         "prop_courriel": null,
+        "notes": "",
         "id_user": "prof_lebrun@gmail.com",
-        "mat_photo": null,
+        "suivi":"",
         "created_at": "2013/05/25 06:10:40 +0000"
     }
 };
@@ -106,6 +109,17 @@ var site_model = {
         "Friche",
         "Zone urbaine",
         "Autre"
+    ],
+    "individus":[
+        "1 - 5",
+        "6 - 20",
+        "21 - 50",
+        "plus de 50"
+    ],
+    "suivi":[
+        "Oui",
+        "Non",
+        "Je ne sais pas"
     ]
 };
 // ***

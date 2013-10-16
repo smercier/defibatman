@@ -1,0 +1,937 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <!--<meta name="viewport" content="width=device-width">-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="styles/6bad6e7f.main.css">
+        <script src="scripts/vendor/f7f27360.modernizr.js"></script>
+
+        <link rel="stylesheet" href="styles/vendor/628e9a71.bootstrap.css">
+
+        <link rel="stylesheet" href="styles/vendor/3a90479d.leaflet.css">
+</head>
+    <body>
+
+    <!-- Page content of course! -->
+    <!-- Custom styles for this template -->
+<style>
+  /* Move down content because we have a fixed navbar that is 50px tall */
+  body {
+    /*padding-top: 0px;*/
+    padding-bottom: 70px;
+  }
+
+  /* Set widths on the navbar form inputs since otherwise they're 100% wide */
+  .navbar-form input[type="text"],
+  .navbar-form input[type="password"] {
+    width: 180px;
+  }
+
+  /* Wrapping element */
+  /* Set some basic padding to keep content from hitting the edges */
+  .body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* Responsive: Portrait tablets and up */
+  @media screen and (min-width: 768px) {
+    /* Remove padding from wrapping element since we kick in the grid classes here */
+    .body-content {
+      padding: 0;
+    }
+
+  }
+    .bottom-nav .navbar .nav{
+        float:left;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+    .bottom-nav .navbar .nav > li {
+        float: left;
+    }
+
+    .test{
+        bottom: 0;
+        margin-bottom: 0;
+        position: fixed;
+        right: 0;
+        left: 0;
+        /*z-index: 3;*/
+        border-radius: 0;
+        height:50px;
+        width: 100%;
+        background-color: #222;
+        text-align: center;
+    }
+
+
+    .leaflet-container .leaflet-control-attribution{
+        font-size: 8px;
+    }
+    #map-panel{
+        /*display: none;*/
+        z-index: 1;
+    }
+
+    .map-wrapper .crosshair {
+        position: absolute;
+        width: 65px;
+        height: 65px;
+        background: transparent url(images/crosshair.png) 0 0 no-repeat scroll;
+        top: 50%;
+        left: 50%;
+        margin: -32.5px 0 0 -32.5px;
+        pointer-events: none;
+        z-index: 2;
+        opacity: 0.8;
+    }
+
+    #login-panel,#top-panel{
+        /*display: none;*/
+
+        position: absolute;
+        float: left;
+        top:0;
+        bottom:0;
+        width:100%;
+        border:0;
+        padding:0;
+        z-index: 25;
+        background-color: #eee;
+    }
+
+    #top-panel{
+        /*position: fixed;*/
+        background: transparent;
+        z-index: 30;
+    }
+
+    #top-panel .backdrop, #top-panel .popup{
+        background-color: #fff;
+        opacity: 0.7;
+        position:absolute;
+        top:0;
+        bottom:0;
+        width:100%;
+        overflow: hidden;
+        text-align: center;
+    }
+    #top-panel .popup{
+        background-color: transparent;
+        z-index: 2;
+        opacity: 1;
+    }
+    #login-panel .content, #top-panel .content{
+        margin-top: 52px;
+        padding: 10px;
+    }
+
+    #batman-toolbar{
+        position: absolute;
+        float: left;
+        bottom:0;
+        width:100%;
+        border:0;
+        padding:0;
+        z-index: 24;
+        background-color: #333;
+        height: 50px;
+        text-align: center;
+    }
+    
+    #batman-toolbar .btn{
+        /*height: 40px;*/
+        background-color: transparent;
+        /*font-size: 20px;*/
+    }
+
+    #batman-toolbar .butbar{
+        margin:0;
+        padding: 0;
+        border:1px solid #444;
+        font-size: 20px;
+    }
+    #batman-toolbar .butbar > li {
+        float: left;
+        list-style: none;
+        width: 32%;
+        border:0;
+        height:40px;
+        margin: 5px 0 0 0;
+        line-height: 38px;
+    }
+    #batman-toolbar .butbar > li > a{
+        color: #fff;
+        display: block;
+        border-right:1px solid #Fdd;
+        height: 38px;
+    }
+
+    #form-panel{
+        display: none;
+
+        position: absolute;
+        float: left;
+        bottom:50px;
+        width:100%;
+        border:0;
+        padding:0;
+        z-index: 2;
+        background-color: #333;
+        top:0;
+
+    }
+
+    #form-panel .form-submit-toolbar{
+        position: absolute;
+        float: left;
+        height:40px;
+        bottom:0;
+        width:100%;
+        border:0;
+        padding:0;
+        text-align: center;
+        padding: 0 2px;
+        /*z-index: 2;*/
+        display: none;
+    }
+
+    #form-panel .form-controls{
+        background-color: #f5f5f5;
+        position: absolute;
+        float: left;
+        top:0;
+        /*bottom:42px;*/
+        bottom: 0;
+        width:100%;
+        border:0;
+        padding:0;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding:0 4px;
+    }
+
+    .form-controls input{
+        margin-bottom: 6px;
+    }
+</style>
+
+
+<div id="top-panel" style="display:none;">
+    <div class="popup">
+        <div class="content">
+            <div class="panel panel-default">
+                <div class="panel-heading alert-title" style="text-align: center">
+                    ALERT!
+                </div>
+                <div class="panel-body">
+                <p class="lead alert-msg" style="font-size: 16px;">test</p>
+                </div>
+                <hr>
+                <button class="btn btn-primary btn-lg btn-block alert-button">OK</button>
+            </div>
+        </div>
+    </div>
+    <div class="backdrop"></div>
+</div>
+
+<div id="login-panel">
+    <div class="logo-login" style="position:absolute; top:4px; left:50%;margin-left:-100px">
+        <img src="images/0d61a820.bat-logo.png" style="" alt="Chauve-souris">
+    </div>
+    <div class="content" style="margin-top: 52px">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="text-align: center">
+                PROJET BATMAN
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" role="form" id="cs_login" name="cs_login">
+                    <div class="well">
+
+                        <div class="input-group input-group-large">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                            <input type="text" class="form-control" id="inputUsername" placeholder="Courriel" value="steflef">
+                        </div>
+                        <div class="input-group input-group-large" style="margin-top: 8px">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            <input type="password" class="form-control" id="inputPassword" placeholder="Mot de passe" value="test">
+                        </div>
+
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" onsubmit="return false;" id="cs_connexion">Se Connecter</button>
+                    <hr>
+                    <p>
+                        <button type="button" class="btn btn-default btn-small">Créer un compte</button>
+                        <button type="button" class="btn btn-default btn-small pull-right"><span class="glyphicon glyphicon-lock"></span> ?</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="batman-toolbar">
+    <ul class="butbar">
+    <li style="width: 2%"></li>
+    <li><a href="#" title="Observations"><span class="glyphicon glyphicon-map-marker"></span></a></li>
+    <li><a href="#" title="Profil"><span class="glyphicon glyphicon-user"></span></a></li>
+    <li><a href="#" style="border-right: none" title="À propos"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+    </ul>
+</div>
+
+<div id="map-panel">
+    <div class="map-toolbar" style="position: absolute; float: left;height:40px; bottom:50px;width:100%;border:0;padding:0 4px;z-index: 2">
+        <button id="map-button" type="button" class="btn btn-primary btn-lg btn-block">Localisation du site <span class="glyphicon glyphicon-ok-sign"></span></button>
+    </div>
+    <div class="map-wrapper" style="position: absolute; float: left; top:0px;bottom:92px;width:100%;border:0;padding:0;z-index: 2">
+        <div class="crosshair"></div>
+        <div id="map-canvas" style="min-height:100%; background-color: #ccc"></div>
+    </div>
+</div>
+
+<div id="form-panel">
+    <div class="form-controls">
+    <form role="form" id="cs_form">
+
+        <div class="steps-site" style="margin-top: 8px;">
+            <p class="lead">Formulaire d'identification <buttton class="btn btn-default pull-right form-cancel"><span class="glyphicon glyphicon-map-marker"></span></buttton></p>
+
+            <!--<hr>-->
+            <strong>Estimation du nombre de chauves-souris</strong>
+            <br>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="site_individus" value="1 - 5" checked="checked">
+                    1 - 5
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="site_individus"  value="6 - 20">
+                    6 - 20
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="site_individus" value="21 - 50">
+                    21 - 50
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="site_individus"  value="+ de 50">
+                    + de 50
+                </label>
+            </div>
+            <div>
+                <label for="site_structure">
+                    Site
+                </label>
+                <select name="site_structure" id="site_structure" required="required">
+                    <option value="Chalet">
+                        Chalet
+                    </option>
+                    <option value="Entrepôt ou hangar">
+                        Entrepôt ou hangar
+                    </option>
+                    <option value="Mine">
+                        Mine
+                    </option>
+                    <option value="Grange">
+                        Grange
+                    </option>
+                    <option value="Pont">
+                        Pont
+                    </option>
+                    <option value="Caverne ou grotte">
+                        Caverne ou grotte
+                    </option>
+                    <option value="Maison habitée">
+                        Maison habitée
+                    </option>
+                    <option value="Nichoir à Chauves-souris">
+                        Nichoir à Chauves-souris
+                    </option>
+                    <option value="Maison Abandonnée">
+                        Maison Abandonnée
+                    </option>
+                    <option value="Arbre">
+                        Arbre
+                    </option>
+                    <option value="Autre (précisez)">
+                        Autre (précisez)
+                    </option>
+                </select>
+            </div>
+            <div style="margin-top: 8px;">
+                <label for="site_habitat">
+                    Habitat
+                </label>
+                <select name="site_habitat" id="site_habitat" required="required">
+                    <option value="Champs agricoles">
+                        Champs agricoles
+                    </option>
+                    <option value="Parc">
+                        Parc
+                    </option>
+                    <option value="Bordure de Rivière">
+                        Bordure de Rivière
+                    </option>
+                    <option value="Zone Urbaine">
+                        Zone Urbaine
+                    </option>
+                    <option value="Bordure de route">
+                        Bordure de route
+                    </option>
+                    <option value="Forêt">
+                        Forêt
+                    </option>
+                    <option value="Milieu humide">
+                        Milieu humide
+                    </option>
+                    <option value="Bordure de lac">
+                        Bordure de lac
+                    </option>
+                    <option value="Friche">
+                        Friche
+                    </option>
+                    <option value="Autre (précisez)">
+                        Autre (précisez)
+                    </option>
+                </select>
+            </div>
+            <br>
+            <div class="form-group">
+                <span class="glyphicon glyphicon-camera"></span>
+                <label for="site_image">Image (si disponible)</label>
+                <input type="file" id="site_image" name="site_image" accept="image/*" capture="">
+            </div>
+            <hr>
+        </div>
+
+        <div class="steps-id">
+            <!--<p class="lead">Coordonnées</p>-->
+            <strong>Vos coordonnées (confidentiel et facultatif)</strong>
+            <input type="text" class="form-control" id="obs_nom" name="obs_nom" placeholder="Nom">
+            <input type="text" class="form-control" id="obs_adresse" name="obs_adresse" placeholder="Adresse">
+            <input type="text" class="form-control" id="obs_ville" name="obs_ville" placeholder="Ville">
+            <input type="text" class="form-control" id="obs_codepostal" name="obs_codepostal" placeholder="Code Postal">
+            <input type="text" class="form-control" id="obs_tel" name="obs_telephone" placeholder="Téléphone">
+            <br>
+            <strong>Propriétaire du site si connu</strong>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="same_coordinates" id="_coord" checked> Identique à vos coordonnées?
+                </label>
+            </div>
+            <div id="prop">
+                <input type="text" class="form-control" id="prop_nom" name="prop_nom" placeholder="Nom">
+                <input type="text" class="form-control" id="prop_adresse" name="prop_adresse" placeholder="Adresse">
+                <input type="text" class="form-control" id="prop_ville" name="prop_ville" placeholder="Ville">
+                <input type="text" class="form-control" id="prop_codepostal" name="prop_codepostal" placeholder="Code Postal">
+                <input type="text" class="form-control" id="prop_tel" name="prop_telephone" placeholder="Téléphone">
+                <input type="text" class="form-control" id="prop_courriel" name="prop_courriel" placeholder="Courriel">
+            </div>
+            <hr>
+        </div>
+
+        <div class="steps-validate">
+            <label for="notes">Autres commentaires</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+            <br>
+            <small><em>
+                Au cours des prochaines années, désirez-vous participer à un programme
+                de suivi des colonies des chauves-souris (p. ex. deux décomptes visuels
+                par année) ?
+            </em>
+            </small>
+            <br>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="suivi" value="Oui" checked="checked">
+                    Oui
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="suivi" value="Non">
+                    Non
+                </label>
+            </div>
+            <div class="radio-inline">
+                <label>
+                    <input type="radio" name="suivi" value="Je ne sais pas">
+                    Je ne sais pas
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-primary btn-block">Enregister <span class="glyphicon glyphicon-upload"></span></button>
+                <button type="button" class="btn btn-default btn-block form-cancel" style="margin-top: 8px;">Ne pas enregistrer <span class="glyphicon glyphicon-remove-circle"></span></button>
+            </div>
+        </div>
+        <br>
+    </form>
+    </div>
+</div>
+
+    <!-- JS and analytics only. -->
+    <!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+//            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+//            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+//            g.src='//www.google-analytics.com/ga.js';
+//            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+
+        <script src="scripts/3a1a7165.main.js"></script>
+        <script src="scripts/4a20a196.fastclick.js"></script>
+
+    <script>
+
+    $(document).ready(function() {
+        L.Icon.Default.imagePath = '/dist/images';
+        var map = new L.Map('map-canvas',{'scrollWheelZoom':false,minZoom:9, maxZoom:17});
+        map.attributionControl.setPrefix('');
+
+        //Si jamais nous avons besoin des clusters
+        //markersLayer = new L.LayerGroup();
+        //markers = new L.MarkerClusterGroup({ showCoverageOnHover: false, animateAddingMarkers : true });
+
+        var stamenAttributions ='Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.';
+        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                osmAttrib = 'Map data © openstreetmap contributors',
+        //osm = new L.TileLayer(osmUrl, {minZoom:8, maxZoom:18, attribution:osmAttrib}),
+        //stamenTonerHybrid = new L.TileLayer('http://{s}.tile.stamen.com/toner-hybrid/{z}/{x}/{y}.png', {attribution: 'Stamen'});
+        //stamenTonerLines = new L.TileLayer('http://{s}.tile.stamen.com/toner-lines/{z}/{x}/{y}.png', {attribution: 'Stamen'});
+        //stamenTonerBackground = new L.TileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.png', {attribution: 'Stamen'});
+        //stamenTonerLite = new L.TileLayer('https://stamen-tiles.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {attribution: 'Stamen'});
+        stamenTonerLite = new L.TileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', {attribution: stamenAttributions});
+        //mapCenter = new L.LatLng(origin.lat, origin.lon);
+
+        map.addLayer(stamenTonerLite);
+
+
+        function onLocationFound(position) {
+            console.log("Location fund!!!");
+            console.log(position);
+
+            site_model.geometry.coordinates = [position.latlng.lat, position.latlng.lng];
+            //var radius = position.accuracy / 2;
+
+            //L.marker(position.latlng).addTo(map).bindPopup("Vous êtes à environ " + radius + " mètres de ce point").openPopup();
+            //marker = new L.userMarker(position.latlng, {pulsing: true, smallIcon:true});
+            //L.circle(position.latlng, radius).addTo(map);
+            map.setView( position.latlng, 16);
+        }
+
+        function onLocationError(e) {
+            console.log(e.message);
+        }
+
+        map.on('locationfound', onLocationFound);
+        map.on('locationerror', onLocationError);
+        map.locate({watch: false, locate: true, setView: true, enableHighAccuracy:true});//,timeout:15000,maximumAge:20000});
+
+
+        $("input[type=file]").change(function(){
+            var file = $("input[type=file]")[0].files[0];
+            alert(file.name + "\n" +
+                    file.type + "\n" +
+                    file.size + "\n" +
+                    file.lastModifiedDate);
+        });
+
+        var site_model = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-73.5716, 45.52716]
+            },
+            "properties": {
+                "type": "cs:observation",
+                "site_structure": null,
+                "site_habitat": null,
+                "site_individus": null,
+                "site_image": null,
+                "obs_nom": null,
+                "obs_adresse": null,
+                "obs_ville": null,
+                "obs_codepostal": null,
+                "obs_telephone": null,
+                "obs_courriel": null,
+                "prop_nom": null,
+                "prop_adresse": null,
+                "prop_ville": null,
+                "prop_codepostal": null,
+                "prop_telephone": null,
+                "prop_courriel": null,
+                "notes": null,
+                "id_user": null,
+                "suivi": null,
+                "created_at": null
+            }
+        };
+        var structures_model = [
+            "Chalet",
+            "Entrepôt",
+            "Hangar",
+            "Mine",
+            "Grange",
+            "Pont",
+            "Caverne ou grotte",
+            "Maison habitée",
+            "Nichoir à chauves-sourir",
+            "Maison abandonnée",
+            "Arbre",
+            "Autre"
+        ];
+        var habitats_model = [
+            "Champs agricoles",
+            "Parc",
+            "Forêt",
+            "Bordure de lac",
+            "Bordure de rivière",
+            "Bordure de route",
+            "Milieu humide",
+            "Friche",
+            "Zone urbaine",
+            "Autre"
+        ];
+
+        console.log('Batman to the rescue!');
+
+        var batman_api = (function($){
+
+            var _url = "http://127.0.0.1:3000/api/";
+            var _formId = "cs_form";
+            var _user = null;
+            var _LatLng = {};
+            var api = {
+                add: function(){
+                    var _self = this;
+                    console.log(_url);
+                    $.ajax({
+                        url: _url + "site/",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: '{"site":'+JSON.stringify(this.formToJson())+'}',
+                        dataType: 'json'
+                    }).then(
+                            function(rsp){
+                                console.log(rsp);
+                                _self.showAlert("id:"+rsp.id+" | rev:"+rsp.rev,"Succès!","OK",_self.closeFormPanel);
+                            },
+                            function(e){
+                                console.log("== add fail ==");
+                                console.log(e.status);
+                                var infos = jQuery.parseJSON(e.responseText);
+                                if(infos.code == "401"){
+                                    _self.showLoginPanel();
+                                }
+                                _self.showAlert(infos.msg, infos.code);
+                            }
+                    )
+                },
+                update:function(_id,_rev){
+                    var _self = this;
+                    $.ajax({
+                        url: _url + "site/" +_id +"/"+_rev,
+                        type: 'PUT'
+                    }).then(
+                            function(rsp){
+                                console.info("== update done ==");
+                                console.log(rsp);
+                                _self.populateForm(rsp);
+                                _self.showAlert("Mise à jour effectuée.","Succès!");
+                            },
+                            function(e){
+                                console.error("== update fail ==");
+                                console.log(e);
+                                var infos = jQuery.parseJSON(e.responseText);
+                                if(infos.code == "401"){
+                                    _self.showLoginPanel();
+                                }
+                                _self.showAlert(infos.msg,infos.code);
+                            }
+                    )
+                },
+                remove:function(_id,_rev){
+                    var _self = this;
+                    $.ajax({
+                        url: _url + "site/" +_id +"/"+_rev,
+                        type: 'DELETE'
+                    }).then(
+                            function(rsp){
+                                console.info("== remove done ==");
+                                console.log(rsp);
+                                _self.clearForm();
+                            },
+                            function(e){
+                                console.error("== get fail ==");
+                                console.log(e);
+                                var infos = jQuery.parseJSON(e.responseText);
+                                if(infos.code == "401"){
+                                    _self.showLoginPanel();
+                                }
+                                _self.showAlert(infos.msg,infos.code);
+                            }
+                    )
+                },
+                get:function(_id){
+                    var _self = this;
+                    $.ajax({
+                        url: _url + "site/"+_id,
+                        type: 'GET',
+                        contentType: 'application/json'
+                    }).then(
+                            function(rsp){
+                                console.info("== get done ==");
+                                console.log(rsp);
+                                // TODO Populate Form with data
+                                _self.populateForm(rsp)
+                            },
+                            function(e){
+                                console.error("== get fail ==");
+                                console.log(e);
+                                var infos = jQuery.parseJSON(e.responseText);
+                                if(infos.code == "401"){
+                                    _self.showLoginPanel();
+                                }
+                                _self.showAlert(infos.msg,infos.code);
+                            }
+                    )
+                },
+                listSites:function(){
+                    console.log(_url);
+                    var _self = this;
+                    $.ajax({
+                        url: _url + "site/",
+                        type: 'GET',
+                        contentType: 'application/json'
+                    }).then(
+                            function(rsp){
+                                //TODO List sites on the map
+                                //!! Just for admin role.
+                                console.info("=== listSites fail ===");
+                                console.log(rsp);
+                            },
+                            function(e){
+                                console.error("=== listSites fail ===");
+                                var infos = jQuery.parseJSON(e.responseText);
+                                if(infos.code == "401"){
+                                    _self.showLoginPanel();
+                                }
+                                _self.showAlert(infos.msg,infos.code);
+                            }
+                    )
+                },
+                setGeom:function(m){
+                    var _self = this;
+                    console.log(m.getCenter());
+                    this._LatLng = m.getCenter();
+                    _self.showFormPanel();
+                    console.log(this);
+                },
+                login:function(){
+                    console.info("LOGIN SUBMIT");
+                    this._user = $("#inputUsername").val();
+                    var _psw = $("#inputPassword").val();
+                    var _self = this;
+                    $.ajax({
+                        url: _url + "login/",
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: '{"username":"'+this._user+'","userpass":"'+_psw+'"}',
+                        dataType: 'json'
+                    }).then(
+                            function(rsp){
+                                console.info("== _login done ==");
+                                console.log(rsp);
+                                _self.closeLoginPanel();
+                                // TODO put username in cookie for auto remember me?
+                            },
+                            function(e){
+                                console.error("== _login fail ==");
+                                console.log(e.status);
+                                var infos = jQuery.parseJSON(e.responseText);
+                                _self.showAlert(infos.msg,infos.code);
+                            }
+                    )
+                },
+                logout:function(){
+                    var _self = this;
+                    $.ajax({
+                        url: _url + "logout/",
+                        type: 'GET'
+                    }).then(
+                            function(rsp){
+                                console.info("== logout fail ===");
+                                console.log(rsp);
+                                _self.showLoginPanel();
+                                return;
+
+                            },
+                            function(e){
+                                console.error("== logout fail ===");
+                                var infos = jQuery.parseJSON(e.responseText);
+                                _self.showAlert(infos.msg,infos.code);
+                                return;
+                            }
+                    )
+                },
+                signup:function(){
+                    // TODO
+                },
+                _cUrl:function(_url, _verb, _data, done_cb, fail_cb){
+
+                    $.ajax({
+                        url: _url,
+                        type: _verb,
+                        contentType: 'application/json',
+                        data: _data,
+                        dataType: 'json'
+                    }).then( done_cb, fail_cb)
+                },
+                populateForm:function(data){
+                    //TODO populate Form with server data
+                },
+                clearForm:function(){
+                    //TODO populate Form with default data
+                },
+                formToJson:function(){
+                    // PROCESS
+                    //parse Form
+                    var values = {};
+                    var model = site_model;
+                    var serialized = $('#cs_form').serializeArray();
+                    $.each(serialized,function(){
+                        values[this.name] = this.value;
+                    });
+
+                    $.each(model.properties,function(index) {
+                        if(index in values){
+                            model.properties[index] = values[index];
+                        }
+                    });
+
+                    //AUTO EMAIL
+                    model.properties.obs_courriel = this._user;
+
+                    // AUTO PASTE INFOS
+                    if($('#_coord').is(':checked')){
+                        model.properties.prop_nom = $("#obs_nom").val();
+                        model.properties.prop_adresse= $("#obs_adresse").val();
+                        model.properties.prop_ville=$("#obs_ville").val();
+                        model.properties.prop_codepostal= $("#obs_codepostal").val();
+                        model.properties.prop_telephone= $("#obs_telephone").val();
+                        model.properties.prop_courriel= this._user;
+                    }
+
+                    console.log(model);
+
+                    // TODO GEO
+
+
+                    // TODO
+                    return model;
+                },
+                showLoginPanel:function(){
+                    $("#login-panel").show();
+                },
+                showAlert:function(){
+                    var _msg = arguments[0] || '';
+                    var _title = arguments[1] || 'Alert!';
+                    var _button = arguments[2] || 'OK';
+                    var _cb = arguments[3] || function(){ console.info("== ALert Close =="); };
+                    var _panel= $("#top-panel");
+                    _panel.find(".alert-msg").text(_msg);
+                    _panel.find(".alert-title").text(_title);
+                    _panel.find(".alert-button").text(_button);
+                    _panel.show()
+                            .find('button')
+                            .bind('click',function(){
+                                batman_api.closeAlertPanel();
+                                _cb();
+                            });
+                },
+                showFormPanel: function(){
+                    $("#form-panel").fadeIn();
+                },
+                closeAlertPanel: function(){
+                    $("#top-panel").slideUp();
+                },
+                closeLoginPanel: function(){
+                    $("#login-panel").hide();
+                },
+                closeFormPanel: function(){
+                    //$("#form-panel").hide();
+                    $("#form-panel").fadeOut();
+                }
+            };
+            return api;
+        })(jQuery);
+
+        // ==== BINDINGS ===
+        $('#_coord').change(function(){
+            console.log("CHANGES!!! > " + $(this).is(':checked'));
+
+            if($(this).is(':checked')){
+                $("#prop").hide();
+            }else{
+                $("#prop").show();
+            }
+        }).change();
+
+        $( "#cs_login" ).submit(function( event ) {
+            //alert( "Handler for .submit() called." );
+            event.preventDefault();
+            batman_api.login();
+        });
+
+        $('#cs_connexion').bind(['click','submit'],function(){
+            $( "#cs_login" ).submit();
+        });
+
+        $( "#cs_form" ).submit(function( event ) {
+            //alert( "Handler for .submit() called." );
+            batman_api.add();
+            event.preventDefault();
+        });
+
+        $("#top-panel").hide();
+
+        $('#map-button')
+                .bind('click', function(){
+                    batman_api.setGeom(map);
+                });
+        $('.form-cancel')
+                .bind('click', function(){
+                    batman_api.closeFormPanel();
+                });
+});
+
+    </script>
+
+    </body>
+</html>

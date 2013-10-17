@@ -1,4 +1,4 @@
-# Projet Défi Batman
+v# Projet Défi Batman
 
 Le **Défi Batman** est un outil  réalisé dans le cadre du GéoHack 2013.
 
@@ -174,11 +174,11 @@ Interfaces pour les écrans plus large ... actuellement seulement pour les mobil
 
 L'application pour recenser et localiser les colonies de Chauves-Souris a été développée et maintenue par:
 
-Simon Mercier <smercier@mapgears.com>
-Stephane Lefebvre <prof.lebrun@gmail.com>
-Camille VIOT <viotcam@gmail.com>
-Renaud Dedenon <r.dedenon@gmail.com>
-Anouk Simard <Anouk.Simard@mrn.gouv.qc.ca>
+Simon Mercier <smercier@mapgears.com>  
+Stephane Lefebvre <prof.lebrun@gmail.com>  
+Camille VIOT <viotcam@gmail.com>  
+Renaud Dedenon <r.dedenon@gmail.com>  
+Anouk Simard <Anouk.Simard@mrn.gouv.qc.ca>  
 
 Si vous voulez en savoir plus sur le projet **Défi Batman**, le fonctionnement de l'application et les futurs développements, veuillez consulter le [site officiel du projet](https://github.com/smercier/defibatman).
 

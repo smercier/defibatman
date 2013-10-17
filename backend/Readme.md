@@ -1,4 +1,4 @@
-v# Projet Défi Batman
+# Projet Défi Batman
 
 Le **Défi Batman** est un outil  réalisé dans le cadre du GéoHack 2013.
 

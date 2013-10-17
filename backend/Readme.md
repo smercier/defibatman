@@ -1,8 +1,6 @@
 # Projet Défi Batman
 
 Le **Défi Batman** est un outil  réalisé dans le cadre du GéoHack 2013.
-..is an open web tool developed at the [DensityDesign Research Lab](http://www.densitydesign.org) (Politecnico di Milano) to create custom vector-based visualizations on top of the amazing [d3.js](https://github.com/mbostock/d3) library by [Mike Bostock](http://bost.ocks.org/mike/).
-Primarily conceived as a tool for designers and vis geeks, **Raw** aims at providing a missing link  between spreadsheet applications (e.g. Microsoft Excel, Apple Numbers, Google Docs, OpenRefine, …) and vector graphics editors (e.g. Adobe Illustrator, Inkscape, ...).
 
 Ce projet est le résultat du travail de l'équipe **Défi Batman** tenu lors
 du [Défi GéoHack MTL le 2 octobre 2013](http://defigeohackmtl.org/).  L'objectif de ce défi était de créer une
@@ -28,8 +26,6 @@ La façon la plus facile d'utiliser le projet consiste à accéder à la version
 
 
 ##Installation
-If you want to run your instance of Raw locally on your machine, be sure you have the following requirements installed. **Starting from version 0.1.2, we decided to simplify the code and removing Node.js: only Bower is needed to install client-side dependencies.**
-
 
 ###Prérequis
 

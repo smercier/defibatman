@@ -124,25 +124,25 @@ Documentation and FAQs about how to use Raw can be found on the [official websit
 
 Le projet à été développé en utilisant beaucoup de librairies vraiment cool:
 
-[Bootstrap (3.0.0)](https://github.com/twbs/bootstrap)
-[Bower](https://github.com/bower/bower)
-[jQuery](https://github.com/jquery/jquery)
-[Leaflet](http://leafletjs.com/)
-[Yeoman](http://yeoman.io/)
-[Grunt](http://gruntjs.com/)
+[Bootstrap (3.0.0)](https://github.com/twbs/bootstrap) 
+[Bower](https://github.com/bower/bower) 
+[jQuery](https://github.com/jquery/jquery) 
+[Leaflet](http://leafletjs.com/) 
+[Yeoman](http://yeoman.io/) 
+[Grunt](http://gruntjs.com/) 
 
-[NodeJs](http://nodejs.org/)
-[Npm](https://npmjs.org/)
-[Express (3.4.0)](http://expressjs.com/)
-[Connect](https://github.com/senchalabs/connect)
-[Consolidate](https://npmjs.org/package/consolidate)
-[Nano](https://github.com/dscape/nano)
-[Ecstatic](https://github.com/jesusabdullah/node-ecstatic)
-[Mustache](https://npmjs.org/package/mustache)
-[Grok](https://github.com/nevir/groc)
+[NodeJs](http://nodejs.org/) 
+[Npm](https://npmjs.org/) 
+[Express (3.4.0)](http://expressjs.com/) 
+[Connect](https://github.com/senchalabs/connect) 
+[Consolidate](https://npmjs.org/package/consolidate) 
+[Nano](https://github.com/dscape/nano) 
+[Ecstatic](https://github.com/jesusabdullah/node-ecstatic) 
+[Mustache](https://npmjs.org/package/mustache) 
+[Grok](https://github.com/nevir/groc) 
 
-[CouchDB](http://couchdb.apache.org/)
-[ElasticSearch](http://www.elasticsearch.org/)
+[CouchDB](http://couchdb.apache.org/) 
+[ElasticSearch](http://www.elasticsearch.org/) 
 
 
 ##Feuille de route  ... TODO

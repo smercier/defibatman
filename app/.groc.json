@@ -1,0 +1,6 @@
+{
+  "glob": ["app.js","routes/*.js","models/*.js","*.md"],
+  "except": [],
+  "out": "./doc",
+  "index": "README.md"
+}

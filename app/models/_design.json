@@ -1,0 +1,17 @@
+{
+    "_id": "_design/cs_sites",
+    "_rev": "9-36035da4160856fd285404c70f4055d1",
+    "language": "javascript",
+    "views": {
+        "all": {
+            "map": "function(doc) {if(doc.properties.type == \"cs:observation\"){emit(null,doc);}}"
+        },
+        "ll": {
+            "map": "function(doc) {if(doc.properties.type == \"cs:observation\"){emit(null, doc.geometry.coordinates);}}"
+        }
+    },
+    "updates": {
+        "hello": "function(doc,req){if(!doc){if(req.id){return[{_id: req.id},'NewWorld']}return[null,'EmptyWorld'];}doc.world='hello';doc.edited_by=req.userCtx;return[doc,'hellodoc'];}",
+        "in-place": "function(doc,req){var field = req.form.field;var value = req.form.value;varmessage = 'set' + field + 'to' + value;doc[field] = value;return [doc,message];}"
+    }
+}

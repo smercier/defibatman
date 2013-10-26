@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">README.md</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="projet-dfi-batman">Projet Défi Batman</h1>
+
+<p>Le <strong>Défi Batman</strong> est un outil  réalisé dans le cadre du GéoHack 2013.</p>
+
+<p>Ce projet est le résultat du travail de l'équipe <strong>Défi Batman</strong> tenu lors
+du <a href="http://defigeohackmtl.org/">Défi GéoHack MTL le 2 octobre 2013</a>.  L'objectif de ce défi était de créer une
+application mobile pour recenser et localiser les colonies de Chauves-Souris.</p>
+
+<p><strong>Répertoire officiel:</strong> <a href="https://github.com/smercier/defibatman">https://github.com/smercier/defibatman</a></p>
+
+<h3 id="contexte"><strong>Contexte</strong></h3>
+
+<p>En moins de trois ans, plusieurs espèces de chauves-souris, ont connu un déclin supérieur à 90%.
+La principale cause est une infection fongique qui s’est propagée au Québec en 2010. Pour mieux
+suivre le déclin des populations de chauves-souris, le Ministère du Développement Durable, Environnement,
+Faune et Parc (MDDEFP) <a href="http://www.mddefp.gouv.qc.ca/infuseur/communique.asp?no=2538">sollicite la collaboration des citoyens</a> pour trouver des colonies de chauves-souris, mais
+aimerait avoir un moyen plus simple que de recueillir l’information par téléphone.
+Ce projet vise à doter cette organisation d’une application Web mobile simple qui permettrait de localiser
+dynamiquement sur une carte les maternités de chauves-souris et de pouvoir y faire des recensements d’individu.</p>
+
+<h3 id="documentationsupport"><strong>Documentation &amp; Support</strong></h3>
+
+<p>La documentation (Readme.md) et le Wiki se retrouvent sur le <a href="https://github.com/smercier/defibatman">site officiel du projet</a>. La documentation du code, générée en format HTML via <a href="https://github.com/nevir/groc">Grok</a>, est disponible (pour le code couvert) dans le dossier /doc ou simplement en consultant les liens suivants:  </p>
+
+<p><a href="app.html">Serveur (app.js)</a> <br />
+<a href="routes/api.html">API (routes/api.js)</a> <br />
+<a href="routes/auth.html">AUTH (routes/auth.js)</a> <br />
+<a href="models/model.html">Modèle CouchDB (models/model.html)</a>   </p>
+
+<h3 id="utilisation"><strong>Utilisation</strong></h3>
+
+<p>La façon la plus facile d'utiliser le projet consiste à accéder à la version disponible sur le serveur mapgears en visitant le url <a href="">...</a>. Vous pouvez également faire rouler le tout en local sur votre machine, juste à suivre les instrucions un peu plus bas.</p>
+
+<h3 id="installation"><strong>Installation</strong></h3>
+
+<h4 id="prrequis"><strong>Prérequis</strong></h4>
+
+<p><a href="http://git-scm.com/book/en/Getting-Started-Installing-Git">Git</a> <br />
+<a href="http://nodejs.org/">NodeJs (v0.10.20)</a> <br />
+<a href="http://couchdb.apache.org/">CouchDB (v1.2.2 et +)</a> <br />
+<a href="http://www.elasticsearch.org/">ElasticSearch (optionnel pour l'instant)</a>    </p>
+
+<h3 id="tapes"><strong>Étapes</strong></h3>
+
+<h6 id="1pourfaireroulerleserveur">1. <strong>Pour faire rouler le serveur</strong></h6>
+
+<p>Clonage du projet via lignes de commandes:</p>
+
+<pre><code class=" sh">$ git clone git@github.com:smercier/defibatman.git
+</code></pre>
+
+<p>Naviguer vers le dossier racine du serveur:</p>
+
+<pre><code class=" sh">$ cd defibatman/backend/
+</code></pre>
+
+<p>Installation des dépendances globales du côté serveur:</p>
+
+<pre><code class=" sh">$ npm install -g nodemon
+</code></pre>
+
+<p>Installation des modules NodeJs du projet:</p>
+
+<pre><code class=" sh">$ npm install
+</code></pre>
+
+<p>Activer le serveur avec Nodemon:</p>
+
+<pre><code class=" sh">$ nodemon --debug ./app.js 3000
+</code></pre>
+
+<p>Vous pouvez maintenant visiter <a href="http://localhost:3000/">http://localhost:3000/</a>.
+La distribution <em>frontend</em> est accessible via <a href="http://localhost:3000/dist/app.html">http://localhost:3000/dist/app.html</a>.</p>
+
+<h6 id="2pourgnrermodifierlefrontend">2. <strong>Pour générer/modifier le frontend</strong></h6>
+
+<p>Naviguer vers le dossier racine du frontend:</p>
+
+<pre><code class=" sh">$ cd defibatman/frontend-mobile/mobile
+</code></pre>
+
+<p>Installation des dépendances globales du côté serveur:</p>
+
+<p>Grunt-cli</p>
+
+<pre><code class=" sh">$ npm install -g grunt-cli
+</code></pre>
+
+<p>Yeoman</p>
+
+<pre><code class=" sh">$ npm install -g yo
+</code></pre>
+
+<p>Yeoman / generator-mobile</p>
+
+<pre><code class=" sh">$ npm install -g generator-mobile
+</code></pre>
+
+<p>Visualiser les tâches Grunt disponibles:</p>
+
+<pre><code class=" sh">$ grunt -h
+</code></pre>
+
+<p>Partir un serveur:</p>
+
+<pre><code class=" sh">$ grunt server
+</code></pre>
+
+<p>Créer des <em>builds</em>:</p>
+
+<pre><code class=" sh">$ grunt build
+</code></pre>
+
+<p>Vous pouvez maintenant déplacer les builds dans la structure du serveur backend dans le dossier /build</p>
+
+<h3 id="libraries"><strong>Libraries</strong></h3>
+
+<p>Le projet à été développé en utilisant beaucoup de librairies vraiment cool:</p>
+
+<p><a href="https://github.com/twbs/bootstrap">Bootstrap (3.0.0)</a> <br />
+<a href="https://github.com/bower/bower">Bower</a> <br />
+<a href="https://github.com/jquery/jquery">jQuery</a> <br />
+<a href="http://leafletjs.com/">Leaflet</a> <br />
+<a href="http://yeoman.io/">Yeoman</a> <br />
+<a href="http://gruntjs.com/">Grunt</a>  </p>
+
+<p><a href="http://nodejs.org/">NodeJs</a> <br />
+<a href="https://npmjs.org/">Npm</a> <br />
+<a href="http://expressjs.com/">Express (3.4.0)</a> <br />
+<a href="https://github.com/senchalabs/connect">Connect</a> <br />
+<a href="https://npmjs.org/package/consolidate">Consolidate</a> <br />
+<a href="https://github.com/dscape/nano">Nano</a> <br />
+<a href="https://github.com/jesusabdullah/node-ecstatic">Ecstatic</a> <br />
+<a href="https://npmjs.org/package/mustache">Mustache</a> <br />
+<a href="https://github.com/nevir/groc">Grok</a>  </p>
+
+<p><a href="http://couchdb.apache.org/">CouchDB</a> <br />
+<a href="http://www.elasticsearch.org/">ElasticSearch</a>  </p>
+
+<h3 id="feuillederoutetodo"><strong>Feuille de route  ... TODO</strong></h3>
+
+<blockquote>
+  <p>Améliorer la documentation   </p>
+</blockquote>
+
+<p><strong>Backend</strong>   </p>
+
+<blockquote>
+  <p>Verbes GET, PUT et DELETE de l'API REST <br />
+  Volet Administratif <br />
+  Gestion des utilisateurs <br />
+  Tests unitaires et fonctionnels   </p>
+</blockquote>
+
+<p><strong>Frontend</strong>  </p>
+
+<blockquote>
+  <p>Liste des sites cs <br />
+  Édition d'un site cs <br />
+  Suppression d'un site cs <br />
+  Vue utilisateur (liste des sites cs rapportés, etc.) <br />
+  Vues Informations sur le projet <br />
+  Vues Admin   </p>
+</blockquote>
+
+<p>Interfaces pour les écrans plus large ... actuellement seulement pour les mobiles   </p>
+
+<p><strong>Geo</strong>  </p>
+
+<blockquote>
+  <p>Lier CouchDB avec ElasticSearch via river    </p>
+</blockquote>
+
+<h3 id="quipededveloppement"><strong>Équipe de développement</strong></h3>
+
+<h3 id="contacts"><strong>&amp; Contacts</strong></h3>
+
+<p>L'application pour recenser et localiser les colonies de Chauves-Souris a été développée et maintenue par:  </p>
+
+<p>Simon Mercier <a href="&#109;&#97;&#x69;&#108;&#116;&#x6f;:&#115;&#109;&#101;&#x72;&#99;&#x69;e&#114;&#x40;&#x6d;&#x61;&#x70;&#x67;&#101;a&#114;&#x73;&#x2e;&#99;o&#x6d;">&#115;&#109;&#101;&#x72;&#99;&#x69;e&#114;&#x40;&#x6d;&#x61;&#x70;&#x67;&#101;a&#114;&#x73;&#x2e;&#99;o&#x6d;</a> <br />
+Stephane Lefebvre <a href="&#x6d;ai&#x6c;&#116;&#x6f;:&#x70;&#114;&#x6f;&#102;.&#x6c;&#101;b&#114;&#117;&#110;&#x40;g&#109;&#x61;i&#108;.&#99;&#x6f;&#109;">&#x70;&#114;&#x6f;&#102;.&#x6c;&#101;b&#114;&#117;&#110;&#x40;g&#109;&#x61;i&#108;.&#99;&#x6f;&#109;</a> <br />
+Camille VIOT <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;:&#x76;i&#111;&#116;&#99;&#97;&#x6d;&#64;&#x67;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;o&#x6d;">&#x76;i&#111;&#116;&#99;&#97;&#x6d;&#64;&#x67;&#x6d;&#x61;&#105;&#108;&#x2e;&#99;o&#x6d;</a> <br />
+Renaud Dedenon <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;:&#114;.&#100;&#101;&#x64;&#x65;&#110;&#111;&#x6e;&#64;&#x67;&#109;&#x61;&#105;l&#46;&#x63;&#x6f;&#x6d;">&#114;.&#100;&#101;&#x64;&#x65;&#110;&#111;&#x6e;&#64;&#x67;&#109;&#x61;&#105;l&#46;&#x63;&#x6f;&#x6d;</a> <br />
+Anouk Simard <a href="&#109;&#x61;&#105;&#x6c;to:&#65;&#110;&#111;u&#x6b;&#46;&#83;&#x69;&#109;a&#x72;&#x64;&#64;&#x6d;&#114;&#110;&#46;&#x67;&#x6f;&#x75;&#x76;&#x2e;&#x71;&#x63;&#x2e;&#x63;a">&#65;&#110;&#111;u&#x6b;&#46;&#83;&#x69;&#109;a&#x72;&#x64;&#64;&#x6d;&#114;&#110;&#46;&#x67;&#x6f;&#x75;&#x76;&#x2e;&#x71;&#x63;&#x2e;&#x63;a</a>  </p>
+
+<p>Si vous voulez en savoir plus sur le projet <strong>Défi Batman</strong>, le fonctionnement de l'application et les futurs développements, veuillez consulter le <a href="https://github.com/smercier/defibatman">site officiel du projet</a>.</p>
+
+<p>Vous désirez contribuer à la suite du projet? Super! Juste à faire un <em>fork</em> du repo et à utiliser le système de Github pour signaller des problématiques et émettre des <em>pull requests</em>.</p>
+
+<h3 id="licence"><strong>Licence</strong></h3>
+
+<blockquote>
+  <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">
+  <img alt="Licence Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" />
+  </a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a>.</p>
+</blockquote></div></div></div></div></body></html>

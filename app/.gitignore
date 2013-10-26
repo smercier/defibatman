@@ -1,0 +1,9 @@
+dist
+dist_*
+mobile
+npm-debug.log
+node_modules
+.idea
+.DS_Store
+.tmp
+*.log

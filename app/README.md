@@ -114,6 +114,19 @@ Construire l'application serveur(build):
 $ grunt build
 ```
 
+**Configuration CouchDB**
+
+Ce script va construire votre base de données, vos vues, votre sécurité et ajoutera quelques documents.    
+
+**!!!** Vous devez déjà avoir une instance de CouchDB installée et disponible sur le port 5984 de votre serveur local (127.0.0.1)
+
+Construire la base documentaire:
+
+``` sh
+$ grunt couch
+```
+
+
 Votre application est maintenant installée!
 
 ######**3. Activer le serveur**

@@ -11,7 +11,7 @@ module.exports = function (grunt) {
     var batConfig = {
         app: 'mobile/dist',
         dist: 'dist',
-        //now: Date.now()
+        db: 'batman',
         now: (new Date()).toISOString()
     };
 
@@ -58,8 +58,8 @@ module.exports = function (grunt) {
                 pass: 'hood'
             },
             files: {
-                src: 'models/couch/batman/config.json',
-                dest: 'http://localhost:5984/sam'
+                src: 'models/couch/<%= batman.db %>/config.json',
+                dest: 'http://localhost:5984/<%= batman.db %>'
             }
         },
         'couch-push': {
@@ -69,8 +69,8 @@ module.exports = function (grunt) {
                     pass: 'hood'
                 },
                 files: {
-                    src: 'models/couch/batman/docs.json',
-                    dest: 'http://localhost:5984/sam'
+                    src: 'models/couch/<%= batman.db %>/docs.json',
+                    dest: 'http://localhost:5984/<%= batman.db %>'
                 }
 
 
@@ -81,8 +81,8 @@ module.exports = function (grunt) {
                 pass: 'hood'
             },
             files: {
-                src: 'models/couch/batman/security.json',
-                dest: 'http://localhost:5984/sam'
+                src: 'models/couch/<%= batman.db %>/security.json',
+                dest: 'http://localhost:5984/<%= batman.db %>'
             }
         }
  

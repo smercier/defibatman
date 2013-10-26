@@ -50,6 +50,7 @@ Parse .hjs &amp; .hmtl files only when needed</strong>   </p>
    <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">router</span><span class="p">)</span>
    <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;less-middleware&#39;</span><span class="p">)({</span> <span class="nx">src</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/public&#39;</span><span class="p">)</span> <span class="p">}))</span>
    <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/public&#39;</span><span class="p">)))</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/dist&#39;</span><span class="p">)))</span>
    <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/doc&#39;</span><span class="p">,</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/doc&#39;</span><span class="p">)));</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h5 id="multipartformdatahandler"><strong>Multipart/form-data handler</strong></h5>
 
 <h4 id="uploads">(<strong>uploads</strong>)</h4></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">upload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
@@ -117,13 +118,21 @@ Parse .hjs &amp; .hmtl files only when needed</strong>   </p>
 <span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/login&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">login</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/logout&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">logout</span><span class="p">);</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/admin&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">admin</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="akahomeget"><strong>/ aka HOME (GET)</strong></h4></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
-    <span class="c1">//Direct response</span>
-    <span class="c1">//res.send(200, &#39;TODO HOME SWEET HOME&#39;);</span>
+    
+    <span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+        <span class="nx">file</span> <span class="o">=</span> <span class="nx">__dirname</span><span class="o">+</span> <span class="s1">&#39;/dist/app.html&#39;</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">__dirname</span><span class="o">+</span> <span class="s1">&#39;/dist/app.html&#39;</span><span class="p">);</span>
 
-    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;../dist/app.html&#39;</span><span class="p">,{</span>
-        <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;^^ö^^&#39;</span><span class="p">,</span>
-        <span class="nx">version</span><span class="o">:</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span>
-        <span class="nx">base</span><span class="o">:</span> <span class="s1">&#39;/dist/&#39;</span>
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;../dist/app.html&#39;</span><span class="p">,{</span>
+                <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;^^ö^^&#39;</span><span class="p">,</span>
+                <span class="nx">version</span><span class="o">:</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span>
+                <span class="nx">base</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span>
+            <span class="p">});</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;Generate your FrontEnd Build &gt; should be in /dist&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
     <span class="p">});</span>
 <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 

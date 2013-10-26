@@ -45,7 +45,8 @@ La façon la plus facile d'utiliser le projet consiste à accéder à la version
     
 
 ###**Étapes**   
-###### 1. **Pour faire rouler le serveur**   
+
+######**1. Cloner le projet**   
 
 Clonage du projet via lignes de commandes:
 
@@ -53,23 +54,69 @@ Clonage du projet via lignes de commandes:
 $ git clone git@github.com:smercier/defibatman.git
 ```
 
-Naviguer vers le dossier racine du serveur:
+**!** Ou encore mieux, faire un fork du projet via [GitHub](https://github.com) et cloner votre fork. 
+Il sera ainsi plus facile de collaborer et de soumettre des pull request. 
+
+######**2. Configuration et gestion des dépendances**   
+
+Naviguer vers le dossier racine de l'application:
 
 ``` sh
-$ cd defibatman/backend/
+$ cd defibatman/app/
 ```
 
-Installation des dépendances globales du côté serveur:
+**Installation des dépendances globales**
 
+Nodemon
 ``` sh
 $ npm install -g nodemon
 ```
 
-Installation des modules NodeJs du projet:
+Grunt-cli
+``` sh
+$ npm install -g grunt-cli
+```
+
+**Installation du Frontend**
+
+Naviguer vers le dossier /mobile (defibatman/app/mobile):
+
+``` sh
+$ cd mobile
+```
+Installer les modules nécessaires:
 
 ``` sh
 $ npm install
 ```
+
+Construire l'application (build):
+``` sh
+$ grunt build
+```
+
+**Installation du Backend**
+
+Revenir au dossier /app (defibatman/app):
+
+``` sh
+$ cd ..
+```
+Installer les modules nécessaires au serveur:
+
+``` sh
+$ npm install
+```
+
+Construire l'application serveur(build):
+
+``` sh
+$ grunt build
+```
+
+Votre application est maintenant installée!
+
+######**3. Activer le serveur**
 
 Activer le serveur avec Nodemon:
 
@@ -78,22 +125,20 @@ $ nodemon --debug ./app.js 3000
 ```
 
 Vous pouvez maintenant visiter [http://localhost:3000/](http://localhost:3000/).
-La distribution *frontend* est accessible via [http://localhost:3000/dist/app.html](http://localhost:3000/dist/app.html).
 
-###### 2. **Pour générer/modifier le frontend**
+***
+***
+
+######**Pour générer/modifier le frontend**
 
 Naviguer vers le dossier racine du frontend:
 
 ``` sh
-$ cd defibatman/frontend-mobile/mobile
+$ cd defibatman/app/mobile
 ```
 
-Installation des dépendances globales du côté serveur:
+**Installation des dépendances globales du côté serveur**
 
-Grunt-cli
-``` sh
-$ npm install -g grunt-cli
-```
 Yeoman
 ``` sh
 $ npm install -g yo
@@ -108,19 +153,20 @@ Visualiser les tâches Grunt disponibles:
 ``` sh
 $ grunt -h
 ```
-Partir un serveur:
+Ex.: Partir un serveur:
 
 ``` sh
 $ grunt server
 ```
 
-Créer des *builds*:
+Ex.: Créer des *builds*:
 
 ``` sh
 $ grunt build
 ```
 
-Vous pouvez maintenant déplacer les builds dans la structure du serveur backend dans le dossier /build
+Vous pouvez maintenant déplacer les builds dans la structure du serveur backend dans le dossier /build. En mode manuel ou via la commande grunt build du dossier app.    
+Visitez [Yeoman generator-mobile](https://github.com/yeoman/generator-mobile) pour en savoir plus!
 
 ###**Libraries**
 
@@ -137,7 +183,6 @@ Le projet à été développé en utilisant beaucoup de librairies vraiment cool
 [Npm](https://npmjs.org/)  
 [Express (3.4.0)](http://expressjs.com/)  
 [Connect](https://github.com/senchalabs/connect)  
-[Consolidate](https://npmjs.org/package/consolidate)  
 [Nano](https://github.com/dscape/nano)  
 [Ecstatic](https://github.com/jesusabdullah/node-ecstatic)  
 [Mustache](https://npmjs.org/package/mustache)  

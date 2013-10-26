@@ -1,7 +1,6 @@
 // Steflef 2013
 'use strict';
 
-
 module.exports = function (grunt) {
     // show elapsed time at the end
     require('time-grunt')(grunt);
@@ -52,7 +51,41 @@ module.exports = function (grunt) {
                     }
                 ]
             }
+        },
+        'couch-configure': {
+            options: {
+                user: 'robin',
+                pass: 'hood'
+            },
+            files: {
+                src: 'models/couch/batman/config.json',
+                dest: 'http://localhost:5984/sam'
+            }
+        },
+        'couch-push': {
+    
+                options: {
+                    user: 'robin',
+                    pass: 'hood'
+                },
+                files: {
+                    src: 'models/couch/batman/docs.json',
+                    dest: 'http://localhost:5984/sam'
+                }
+
+
+        },
+        'couch-security': {
+            options: {
+                user: 'robin',
+                pass: 'hood'
+            },
+            files: {
+                src: 'models/couch/batman/security.json',
+                dest: 'http://localhost:5984/sam'
+            }
         }
+ 
     });
 
     grunt.registerTask('build', 'Backup /dist + Copy mobile/dist to /dist', 
@@ -66,6 +99,15 @@ module.exports = function (grunt) {
     grunt.registerTask('backup', 'Backup of /dist', 
         [
             'copy:backup'
+        ]
+    );
+
+
+    grunt.registerTask('couch', 'Init CouchDB',
+        [
+            //'couch-configure',
+            'couch-push',
+            'couch-security'
         ]
     );
 };

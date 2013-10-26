@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="en"><head><title>app</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="app"><meta name="groc-project-path" content="app.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">app.js</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="batman-server">BATMAN SERVER</h1>
+
+<h4 id="moduledependenciesenvironments"><strong>Module dependencies &amp; Environments</strong></h4>
+
+<blockquote>
+  <p><strong><a href="http://expressjs.com/">ExpressJS</a></strong> <br />
+  <strong><a href="https://npmjs.org/package/nconf">nconf</a></strong>  </p>
+</blockquote>
+
+<p><strong>Template Engine <a href="http://twitter.github.io/hogan.js/">Hogan</a> <br />
+Parse .hjs &amp; .hmtl files only when needed</strong>   </p>
+
+<p><strong>Static Directories: /public | /doc</strong>   </p>
+
+<blockquote>
+  <p>Pour partir le serveur en mode prod:</p>
+
+<pre><code>$  NODE_ENV=prod nodemon app.js
+</code></pre>
+  
+  <p>Pour partir le serveur en mode dev:</p>
+
+<pre><code>$  NODE_ENV=dev nodemon app.js
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="c1">//Module dependencies  </span>
+<span class="kd">var</span>  <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)</span>
+    <span class="p">,</span><span class="nx">api</span> <span class="o">=</span>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes/api&#39;</span><span class="p">)</span> 
+    <span class="p">,</span><span class="nx">auth</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./routes/auth&#39;</span><span class="p">)</span> 
+    <span class="p">,</span><span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">)</span>
+    <span class="p">,</span><span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">)</span>
+    <span class="p">,</span><span class="nx">nconf</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nconf&#39;</span><span class="p">)</span>   
+    <span class="p">,</span><span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+
+<span class="c1">//Environments</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">||</span> <span class="mi">3000</span><span class="p">);</span>
+
+<span class="c1">//Template Engine [Hogan]</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">engine</span><span class="p">(</span><span class="s1">&#39;hjs&#39;</span><span class="p">,</span>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;hjs&#39;</span><span class="p">).</span><span class="nx">renderFile</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">engine</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">,</span>  <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;hjs&#39;</span><span class="p">).</span><span class="nx">renderFile</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;views&#39;</span><span class="p">));</span>
+
+<span class="c1">//Middleware Stack</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">favicon</span><span class="p">())</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">logger</span><span class="p">(</span><span class="s1">&#39;dev&#39;</span><span class="p">))</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">())</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">urlencoded</span><span class="p">())</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">methodOverride</span><span class="p">())</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">cookieParser</span><span class="p">(</span><span class="s1">&#39;jhwger98qwehewkjr#$#%^#____&#39;</span><span class="p">))</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">session</span><span class="p">())</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">router</span><span class="p">)</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;less-middleware&#39;</span><span class="p">)({</span> <span class="nx">src</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/public&#39;</span><span class="p">)</span> <span class="p">}))</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/public&#39;</span><span class="p">)))</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/dist&#39;</span><span class="p">)))</span>
+   <span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/doc&#39;</span><span class="p">,</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/doc&#39;</span><span class="p">)));</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h5 id="multipartformdatahandler"><strong>Multipart/form-data handler</strong></h5>
+
+<h4 id="uploads">(<strong>uploads</strong>)</h4></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">upload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">formidable</span><span class="p">.</span><span class="nx">IncomingForm</span><span class="p">;</span>
+        <span class="nx">form</span><span class="p">.</span><span class="nx">keepExtensions</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="nx">form</span><span class="p">.</span><span class="nx">uploadDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;/public/uploads&#39;</span><span class="p">);</span>
+
+        <span class="nx">form</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">fields</span><span class="p">,</span> <span class="nx">files</span><span class="p">){</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;You found error&#39;</span><span class="p">);</span>
+            <span class="c1">//do something with files.image etc</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">files</span><span class="p">.</span><span class="nx">image</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">form</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;progress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">bytesReceived</span><span class="p">,</span> <span class="nx">bytesExpected</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">bytesReceived</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="nx">bytesExpected</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">form</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;content-type&#39;</span><span class="o">:</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">});</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;error:\n\n&#39;</span><span class="o">+</span><span class="nx">util</span><span class="p">.</span><span class="nx">inspect</span><span class="p">(</span><span class="nx">err</span><span class="p">));</span>
+        <span class="p">});</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;Done&#39;</span><span class="p">);</span>
+    <span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="errorhandling"><strong>Error Handling</strong></h4>
+
+<blockquote>
+  <p>Terminal:</p>
+
+<pre><code>$ NODE_ENV=prod nodemon app.js
+</code></pre>
+</blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//do logging and user-friendly error message display</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="nx">res</span>
+            <span class="p">.</span><span class="nx">set</span><span class="p">({</span><span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">})</span>
+            <span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">err</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">code</span><span class="o">:</span><span class="nx">err</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span>
+                <span class="nx">msg</span><span class="o">:</span> <span class="nx">err</span><span class="p">.</span><span class="nx">message</span><span class="p">,</span>
+                <span class="nx">status</span><span class="o">:</span><span class="s1">&#39;err&#39;</span><span class="p">,</span>
+                <span class="nx">stack</span><span class="o">:</span><span class="nx">err</span><span class="p">.</span><span class="nx">stack</span>
+            <span class="p">});</span>
+        <span class="nx">next</span><span class="p">();</span>
+    <span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="404"><strong>404</strong></h3>
+
+<p><strong>End of Middleware Stack</strong></p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">){</span>
+    <span class="c1">//res.send(404, &#39;BATMAN 404 !&#39;);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;EOL&quot;</span><span class="p">);</span>
+    <span class="c1">//Render</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">404</span><span class="p">,</span><span class="s2">&quot;END OF LINE&quot;</span><span class="p">);</span>
+    <span class="c1">//res.render(&#39;../dist/404.html&#39;,{});</span>
+<span class="p">});</span>
+
+<span class="c1">//app.get(&#39;/&#39;, express.json(), routes.index);</span>
+<span class="c1">//app.get(&#39;/users&#39;, user.list);</span>
+<span class="c1">//app.post(&#39;/images&#39;, upload, user.list);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<h3 id="routes"><strong>Routes</strong></h3>
+
+<hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="apimap"><strong>API MAP</strong></h4></div></div><div class="code"><div class="wrapper"><span class="c1">//CRUD</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/site/:id&#39;</span><span class="p">,</span> <span class="nx">api</span><span class="p">.</span><span class="nx">get_site_by_id</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/site&#39;</span><span class="p">,</span> <span class="nx">api</span><span class="p">.</span><span class="nx">get_sites</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="s1">&#39;/api/site/:id/:rev&#39;</span><span class="p">,</span> <span class="nx">api</span><span class="p">.</span><span class="nx">add_site</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="s1">&#39;/api/site/:id/:rev&#39;</span><span class="p">,</span> <span class="nx">api</span><span class="p">.</span><span class="nx">delete_site</span><span class="p">);</span>
+
+<span class="c1">//AUTH</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/api/login&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">login</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/logout&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">logout</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/api/admin&#39;</span><span class="p">,</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">admin</span><span class="p">);</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h4 id="akahomeget"><strong>/ aka HOME (GET)</strong></h4></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="nx">res</span><span class="p">){</span>
+    
+    <span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+        <span class="nx">file</span> <span class="o">=</span> <span class="nx">__dirname</span><span class="o">+</span> <span class="s1">&#39;/dist/app.html&#39;</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">__dirname</span><span class="o">+</span> <span class="s1">&#39;/dist/app.html&#39;</span><span class="p">);</span>
+
+    <span class="nx">fs</span><span class="p">.</span><span class="nx">exists</span><span class="p">(</span><span class="nx">file</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;../dist/app.html&#39;</span><span class="p">,{</span>
+                <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;^^ö^^&#39;</span><span class="p">,</span>
+                <span class="nx">version</span><span class="o">:</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span>
+                <span class="nx">base</span><span class="o">:</span> <span class="s1">&#39;/&#39;</span>
+            <span class="p">});</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="s1">&#39;Generate your FrontEnd Build &gt; should be in /dist&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">});</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="serverup"><strong>SERVER UP ^</strong></h3></div></div><div class="code"><div class="wrapper"><span class="nx">http</span><span class="p">.</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">app</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">),</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Express server listening on port &#39;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;port&#39;</span><span class="p">));</span>
+<span class="p">});</span></div></div></div></div></body></html>

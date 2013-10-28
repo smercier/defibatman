@@ -105,16 +105,45 @@ Il sera ainsi plus facile de collaborer et de soumettre des pull request. </p>
 <pre><code class=" sh">$ grunt build
 </code></pre>
 
+<hr />
+
+<h6 id="nouveau"><strong>Nouveau!</strong></h6>
+
+<p><strong>Installation rapide</strong></p>
+
+<p>Pour effectuer le build du frontend et le monter dans le backend d'une ligne de commande:</p>
+
+<pre><code class=" sh">$ grunt run
+</code></pre>
+
+<hr />
+
 <p><strong>Configuration CouchDB</strong></p>
 
 <p>Ce script va construire votre base de données, vos vues, votre sécurité et ajoutera quelques documents.    </p>
 
-<p><strong>!!!</strong> Vous devez déjà avoir une instance de CouchDB installée et disponible sur le port 5984 de serveur local 127.0.0.1</p>
+<p><strong>!!!</strong> Vous devez déjà avoir une instance de CouchDB installée et disponible sur le port 5984 de votre serveur local (127.0.0.1)</p>
 
 <p>Construire la base documentaire:</p>
 
 <pre><code class=" sh">$ grunt couch
 </code></pre>
+
+<hr />
+
+<h6 id="nouveau"><strong>Nouveau!</strong></h6>
+
+<p><strong>Configurer CouchDB</strong></p>
+
+<p>Vous pouvez configurer CouchDB via ligne de commande, mais vous devez avant tout vérifier que tout est conforme dans le fichier models/couch/batman/config.json:</p>
+
+<pre><code class=" sh">$ grunt couch-config
+</code></pre>
+
+<p><em>Le mot de passe pour robin: hood</em> <br />
+À changer bien entendu.</p>
+
+<hr />
 
 <p>Votre application est maintenant installée!</p>
 
@@ -231,11 +260,11 @@ Visitez <a href="https://github.com/yeoman/generator-mobile">Yeoman generator-mo
 
 <p>L'application pour recenser et localiser les colonies de Chauves-Souris a été développée et maintenue par:  </p>
 
-<p>Simon Mercier <a href="&#109;&#x61;i&#108;&#x74;&#x6f;:&#x73;&#x6d;&#101;&#x72;&#99;&#x69;&#101;&#x72;&#64;&#x6d;&#97;&#112;&#103;&#x65;&#x61;&#114;&#115;&#x2e;&#x63;&#x6f;&#109;">&#x73;&#x6d;&#101;&#x72;&#99;&#x69;&#101;&#x72;&#64;&#x6d;&#97;&#112;&#103;&#x65;&#x61;&#114;&#115;&#x2e;&#x63;&#x6f;&#109;</a> <br />
-Stephane Lefebvre <a href="&#x6d;&#97;i&#108;&#x74;&#111;:&#112;&#114;&#x6f;&#x66;&#46;l&#101;&#98;&#114;u&#x6e;&#64;&#x67;m&#x61;&#x69;&#x6c;.&#x63;&#x6f;&#x6d;">&#112;&#114;&#x6f;&#x66;&#46;l&#101;&#98;&#114;u&#x6e;&#64;&#x67;m&#x61;&#x69;&#x6c;.&#x63;&#x6f;&#x6d;</a> <br />
-Camille VIOT <a href="&#109;&#97;&#105;l&#116;&#x6f;:&#x76;&#105;&#x6f;&#116;&#99;&#x61;&#x6d;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;c&#111;&#x6d;">&#x76;&#105;&#x6f;&#116;&#99;&#x61;&#x6d;&#64;&#x67;&#x6d;&#x61;&#x69;&#x6c;&#x2e;c&#111;&#x6d;</a> <br />
-Renaud Dedenon <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;:&#x72;&#46;&#x64;&#101;&#x64;&#101;&#110;on&#x40;&#103;m&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;">&#x72;&#46;&#x64;&#101;&#x64;&#101;&#110;on&#x40;&#103;m&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#x6d;</a> <br />
-Anouk Simard <a href="&#109;&#97;&#105;l&#116;&#111;:&#x41;n&#111;&#117;&#107;&#46;&#83;i&#109;&#97;&#114;&#100;&#x40;&#109;&#114;&#110;&#46;g&#x6f;&#117;&#x76;&#x2e;&#113;&#x63;&#x2e;&#x63;&#97;">&#x41;n&#111;&#117;&#107;&#46;&#83;i&#109;&#97;&#114;&#100;&#x40;&#109;&#114;&#110;&#46;g&#x6f;&#117;&#x76;&#x2e;&#113;&#x63;&#x2e;&#x63;&#97;</a>  </p>
+<p>Simon Mercier <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;:&#x73;&#109;&#x65;&#114;&#99;&#x69;&#101;&#114;&#64;&#109;&#97;p&#x67;&#101;&#97;&#x72;&#x73;&#46;&#99;&#x6f;&#109;">&#x73;&#109;&#x65;&#114;&#99;&#x69;&#101;&#114;&#64;&#109;&#97;p&#x67;&#101;&#97;&#x72;&#x73;&#46;&#99;&#x6f;&#109;</a> <br />
+Stephane Lefebvre <a href="&#109;&#x61;&#105;&#x6c;t&#111;:&#x70;r&#111;&#102;&#46;l&#101;&#98;&#x72;&#117;n&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;">&#x70;r&#111;&#102;&#46;l&#101;&#98;&#x72;&#117;n&#64;&#103;&#x6d;&#x61;&#x69;&#108;&#x2e;&#x63;&#x6f;&#x6d;</a> <br />
+Camille VIOT <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;:&#118;&#x69;&#111;&#116;&#x63;&#x61;&#109;&#64;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;m">&#118;&#x69;&#111;&#116;&#x63;&#x61;&#109;&#64;&#x67;&#109;&#x61;&#105;&#108;&#x2e;&#99;&#x6f;m</a> <br />
+Renaud Dedenon <a href="m&#x61;&#105;&#x6c;&#x74;&#x6f;:&#x72;&#46;&#100;&#101;&#x64;&#x65;&#110;&#111;&#x6e;&#64;&#x67;&#x6d;a&#105;l.&#x63;&#x6f;&#x6d;">&#x72;&#46;&#100;&#101;&#x64;&#x65;&#110;&#111;&#x6e;&#64;&#x67;&#x6d;a&#105;l.&#x63;&#x6f;&#x6d;</a> <br />
+Anouk Simard <a href="m&#97;&#105;&#108;&#116;&#x6f;:&#65;&#x6e;&#111;&#x75;&#107;&#x2e;&#83;&#x69;&#109;&#x61;&#x72;&#x64;&#x40;&#109;&#114;n&#x2e;&#x67;&#x6f;&#x75;&#x76;&#x2e;&#x71;&#99;&#46;&#x63;&#x61;">&#65;&#x6e;&#111;&#x75;&#107;&#x2e;&#83;&#x69;&#109;&#x61;&#x72;&#x64;&#x40;&#109;&#114;n&#x2e;&#x67;&#x6f;&#x75;&#x76;&#x2e;&#x71;&#99;&#46;&#x63;&#x61;</a>  </p>
 
 <p>Si vous voulez en savoir plus sur le projet <strong>Défi Batman</strong>, le fonctionnement de l'application et les futurs développements, veuillez consulter le <a href="https://github.com/smercier/defibatman">site officiel du projet</a>.</p>
 
@@ -246,5 +275,5 @@ Anouk Simard <a href="&#109;&#97;&#105;l&#116;&#111;:&#x41;n&#111;&#117;&#107;&#
 <blockquote>
   <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">
   <img alt="Licence Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" />
-  </a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a>.</p>
+  </a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a></p>
 </blockquote></div></div></div></div></body></html>

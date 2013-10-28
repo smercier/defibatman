@@ -7,7 +7,8 @@
 
 <h5 id="utilisationdelagestiondesutilisateursdecouchdb"><strong>Utilisation de la gestion des utilisateurs de CouchDB</strong></h5>
 
-<p><em>Utilisation du courriel comme clef unique</em></p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rôles disponibles: ["cs:observateur","cs:admin"]   </p>
+<p><em>Utilisation du courriel comme clef unique</em> <br />
+<strong>!!!</strong>La variable <em>name</em> doit être le courriel.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rôles disponibles: ["cs:observateur","cs:admin"]   </p>
 
 <blockquote>
   <p>Exemple d'utilisateur:</p>
@@ -20,13 +21,24 @@
      "password": "oss118"
   }
 </code></pre>
+  
+  <p>cUrl:</p>
+
+<pre><code>$ curl -X POST http://localhost:5984/_users -d '{"_id":"org.couchdb.user:sl@steflef.com","type":"user","name":"sl@steflef.com","roles":["cs:observateur"],"password":"steflef"}' -H "Content-Type: application/json" -u "robin:hood"
+
+res.: {"ok":true,"id":"org.couchdb.user:sl@steflef.com","rev":"1-a91f4f77731ac5d37f8986dee2626162"}
+</code></pre>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">user_model</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;org.couchdb.user:{email}&quot;</span><span class="p">,</span>
     <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;{email}&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;{user}&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span>
     <span class="s2">&quot;roles&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;cs:observateur&quot;</span><span class="p">],</span>
     <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;{plaintext_password}&quot;</span>
-<span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observations"><strong>Observations</strong></h3>
+<span class="p">};</span>
+
+
+
+<span class="c1">//curl -X POST http://localhost:5984/_users -d &#39;{&quot;_id&quot;:&quot;org.couchdb.user:sl@steflef.com&quot;,&quot;type&quot;:&quot;user&quot;,&quot;name&quot;:&quot;sl@steflef.com&quot;,&quot;roles&quot;:[&quot;cs:observateur&quot;],&quot;password&quot;:&quot;steflef&quot;}&#39; -H &quot;Content-Type: application/json&quot; -u &quot;robin:hood&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr /></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="observations"><strong>Observations</strong></h3>
 
 <h5 id="sitesdobservationsenformatgeojson"><strong>Sites d'observations en format GeoJSON</strong></h5>
 
@@ -161,21 +173,7 @@ TODO: Vérifier l'utilisation d'image en document joint.   </p>
 
 <h4 id="batman_designcs_sites"><strong>batman/<em>design/cs</em>sites</strong></h4></div></div><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">cs_sites</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;_design/cs_sites&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_rev&quot;</span><span class="o">:</span> <span class="s2">&quot;8-8fa36a5ae0c483829bde52ead143b3fb&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;language&quot;</span><span class="o">:</span> <span class="s2">&quot;javascript&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;views&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;all&quot;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="s2">&quot;function(doc) {\n  if(doc.properties.type == \&quot;cs:observation\&quot;){\n    emit(null,doc);\n  }\n}&quot;</span>
-            <span class="p">},</span>
-        <span class="s2">&quot;ll&quot;</span><span class="o">:</span> <span class="p">{</span>
-            <span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="s2">&quot;function(doc) {\n  if(doc.properties.type == \&quot;cs:observation\&quot;){\n    emit(null, doc.geometry.coordinates);\n  }\n}&quot;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
-
-<span class="kd">var</span> <span class="nx">cs_sites_v2</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;_id&quot;</span><span class="o">:</span> <span class="s2">&quot;_design/cs_sites&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;_rev&quot;</span><span class="o">:</span> <span class="s2">&quot;8-8fa36a5ae0c483829bde52ead143b3fb&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_rev&quot;</span><span class="o">:</span> <span class="s2">&quot;10-c8c27a1b59f72caa5cd655779fc909de&quot;</span><span class="p">,</span>
     <span class="s2">&quot;language&quot;</span><span class="o">:</span> <span class="s2">&quot;javascript&quot;</span><span class="p">,</span>
     <span class="s2">&quot;views&quot;</span><span class="o">:</span> <span class="p">{</span>
         <span class="s2">&quot;all&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -190,8 +188,6 @@ TODO: Vérifier l'utilisation d'image en document joint.   </p>
         <span class="s2">&quot;in-place&quot;</span><span class="o">:</span> <span class="s2">&quot;function(doc,req){var field = req.form.field;var value = req.form.value;varmessage = &#39;set&#39; + field + &#39;to&#39; + value;doc[field] = value;return [doc,message];}&quot;</span>
     <span class="p">}</span>
 <span class="p">};</span>
-
-<span class="c1">//curl -X PUT http://127.0.0.1:5984/batman/_design/cs_sites/_updates  -u &quot;robin:hood&quot; -d &#39;{&quot;hello&quot;:&quot;function(doc,req){if(!doc){if(req.id){return[{_id: req.id},&#39;NewWorld&#39;]}return[null,&#39;EmptyWorld&#39;];}doc.world=&#39;hello&#39;;doc.edited_by=req.userCtx;return[doc,&#39;hellodoc&#39;];}&quot;,&quot;in-place&quot;:&quot;function(doc,req){var field = req.form.field;var value = req.form.value;varmessage = &#39;set&#39; + field + &#39;to&#39; + value;doc[field] = value;return [doc,message];}&quot;}&#39;</span>
 
 <span class="c1">//curl -v -H &quot;Content-Type: application/json&quot; -X PUT http://127.0.0.1:5984/batman/_design/cs_sites  -u &quot;robin:hood&quot; --data &#39;@models/_design.json&#39;</span>
 <span class="c1">//curl http://127.0.0.1:5984/batman/_design/cs_sites/_view/all  -u &quot;robin:hood&quot; | python -mjson.tool</span></div></div></div></div></body></html>

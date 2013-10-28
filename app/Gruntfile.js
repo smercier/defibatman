@@ -84,6 +84,26 @@ module.exports = function (grunt) {
                 src: 'models/couch/<%= batman.db %>/security.json',
                 dest: 'http://localhost:5984/<%= batman.db %>'
             }
+        },
+        run_grunt: {
+            options: {
+                log: true,
+                minimumFiles: 2,
+                concurrent: 1
+            },
+            simple_target: {
+                options: {
+                    log: true,
+                    task: ['build'],
+                    process: function(res){
+                        if (res.fail){
+                            res.output = 'FAIL'
+                            grunt.log.writeln('Process Failed');
+                        }
+                    }
+                },
+                src: ['mobile/Gruntfile.js','Gruntfile.js']
+            }
         }
  
     });
@@ -105,9 +125,21 @@ module.exports = function (grunt) {
 
     grunt.registerTask('couch', 'Init CouchDB',
         [
-            //'couch-configure',
             'couch-push',
             'couch-security'
+        ]
+    );
+
+
+    grunt.registerTask('couch-config', 'Set CouchDB _config. Check models/couch/batman/config.json first.',
+        [
+            'couch-configure'
+        ]
+    );
+    
+    grunt.registerTask('run', 'Run Grunt Builds',
+        [
+            'run_grunt'
         ]
     );
 };

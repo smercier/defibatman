@@ -1,0 +1,14 @@
+{
+    "admins": {
+        "names": [],
+        "roles": [
+            "cs:admin"
+        ]
+    },
+    "members": {
+        "names": [],
+        "roles": [
+            "observateur"
+        ]
+    }
+}

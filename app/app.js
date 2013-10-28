@@ -32,13 +32,13 @@ app.engine('html',  require('hjs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 
 //Middleware Stack
-app.use(express.favicon())
-   .use(express.logger('dev'))
+app.use(express.logger('dev'))
    .use(express.json())
    .use(express.urlencoded())
    .use(express.methodOverride())
    .use(express.cookieParser('jhwger98qwehewkjr#$#%^#____'))
    .use(express.session())
+    .use(express.favicon('dist/favicon.ico'))
    .use(app.router)
    .use(require('less-middleware')({ src: path.join(__dirname, '/public') }))
    .use(express.static(path.join(__dirname, '/public')))
@@ -110,7 +110,8 @@ app.use(function(req, res, next){
 // ####**API MAP**
 //CRUD
 app.get('/api/site/:id', api.get_site_by_id);
-app.post('/api/site', api.get_sites);
+app.get('/api/site', api.get_sites);
+app.post('/api/site', api.add_site);
 app.put('/api/site/:id/:rev', api.add_site);
 app.delete('/api/site/:id/:rev', api.delete_site);
 

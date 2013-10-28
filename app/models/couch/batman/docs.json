@@ -1,0 +1,89 @@
+{
+    "docs": [
+        {
+            "_id": "_design/cs_sites",
+            
+            "language": "javascript",
+            "views": {
+                "all": {
+                    "map": "function(doc) {if(doc.properties.type == \"cs:observation\"){emit(null,doc);}}"
+                },
+                "ll": {
+                    "map": "function(doc) {if(doc.properties.type == \"cs:observation\"){emit(null, doc.geometry.coordinates);}}"
+                }
+            },
+            "updates": {
+                "hello": "function(doc,req){if(!doc){if(req.id){return[{_id: req.id},'NewWorld']}return[null,'EmptyWorld'];}doc.world='hello';doc.edited_by=req.userCtx;return[doc,'hellodoc'];}",
+                "in-place": "function(doc,req){var field = req.form.field;var value = req.form.value;varmessage = 'set' + field + 'to' + value;doc[field] = value;return [doc,message];}"
+            }
+        },
+        {
+            "_id": "e1aa0918805d6fff5bf258d6fa006d32",
+            
+            "geometry": {
+                "coordinates": [
+                    45.508669999999995,
+                    -73.55399200000001
+                ],
+                "type": "Point"
+            },
+            "properties": {
+                "created_at": 1381891534848,
+                "id_user": null,
+                "notes": "",
+                "obs_adresse": "",
+                "obs_codepostal": "",
+                "obs_courriel": "steflef",
+                "obs_nom": "",
+                "obs_telephone": "",
+                "obs_ville": "",
+                "prop_adresse": "",
+                "prop_codepostal": "",
+                "prop_courriel": "steflef",
+                "prop_nom": "",
+                "prop_ville": "",
+                "site_habitat": "Champs agricoles",
+                "site_image": null,
+                "site_individus": "1 - 5",
+                "site_structure": "Chalet",
+                "suivi": "Oui",
+                "type": "cs:observation"
+            },
+            "type": "Feature"
+        },
+        {
+            "_id": "e1aa0918805d6fff5bf258d6fa007529",
+            
+            "geometry": {
+                "coordinates": [
+                    45.508669999999995,
+                    -73.55399200000001
+                ],
+                "type": "Point"
+            },
+            "properties": {
+                "created_at": 1382633067983,
+                "id_user": null,
+                "notes": "",
+                "obs_adresse": "",
+                "obs_codepostal": "",
+                "obs_courriel": "steflef",
+                "obs_nom": "",
+                "obs_telephone": "",
+                "obs_ville": "",
+                "prop_adresse": "",
+                "prop_codepostal": "",
+                "prop_courriel": "steflef",
+                "prop_nom": "",
+                "prop_ville": "",
+                "site_habitat": "Champs agricoles",
+                "site_image": null,
+                "site_individus": "1 - 5",
+                "site_structure": "Chalet",
+                "suivi": "Oui",
+                "type": "cs:observation"
+            },
+            "type": "Feature"
+        }
+    ]    
+}

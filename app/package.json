@@ -32,6 +32,7 @@
         "grunt-concurrent": "~0.1.0",
         "matchdep": "~0.1.1",
         "time-grunt": "~0.1.1",
-        "grunt-couch": "1.2.3"
+        "grunt-couch": "1.2.3",
+        "grunt-run-grunt": "0.1.1"
     }
 }

@@ -281,6 +281,67 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           ]
         }
       ]
+    }, {
+      "type": "folder",
+      "data": {
+        "path": "models",
+        "title": "models"
+      },
+      "depth": 1,
+      "children": [
+        {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".js"],
+              "pygmentsLexer": "javascript",
+              "multiLineComment": ["/*", "*", "*/"],
+              "singleLineComment": ["//"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "JavaScript"
+            },
+            "sourcePath": "/Users/prof_lebrun/Documents/express/test/app/models/model.js",
+            "projectPath": "models/model.js",
+            "targetPath": "models/model",
+            "pageTitle": "models/model",
+            "firstHeader": {
+              "type": "heading",
+              "data": {
+                "level": 1,
+                "title": "BATMAN MODÈLES",
+                "slug": "batman-modles",
+                "isFileHeader": true
+              },
+              "depth": 1,
+              "children": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 3,
+                    "title": "JSON COUCHDB",
+                    "slug": "json-couchdb"
+                  },
+                  "depth": 3
+                }
+              ]
+            },
+            "title": "BATMAN MODÈLES"
+          },
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 3,
+                "title": "JSON COUCHDB",
+                "slug": "json-couchdb"
+              },
+              "depth": 3
+            }
+          ]
+        }
+      ]
     }
   ];
 

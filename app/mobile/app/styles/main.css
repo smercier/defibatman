@@ -20,3 +20,211 @@ body {
     line-height: 1;
     letter-spacing: -1px;
 }
+
+
+body {
+    /*padding-top: 0px;*/
+    padding-bottom: 70px;
+}
+
+/* Set widths on the navbar form inputs since otherwise they're 100% wide */
+.navbar-form input[type="text"],
+.navbar-form input[type="password"] {
+    width: 180px;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    /* Remove padding from wrapping element since we kick in the grid classes here */
+    .body-content {
+        padding: 0;
+    }
+
+}
+.bottom-nav .navbar .nav{
+    float:left;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.bottom-nav .navbar .nav > li {
+    float: left;
+}
+
+.test{
+    bottom: 0;
+    margin-bottom: 0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    /*z-index: 3;*/
+    border-radius: 0;
+    height:50px;
+    width: 100%;
+    background-color: #222;
+    text-align: center;
+}
+
+
+.leaflet-container .leaflet-control-attribution{
+    font-size: 8px;
+}
+#map-panel{
+    /*display: none;*/
+    z-index: 1;
+}
+
+.map-wrapper .crosshair {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    background: transparent url('/images/crosshair.png') 0 0 no-repeat scroll;
+    top: 50%;
+    left: 50%;
+    margin: -32.5px 0 0 -32.5px;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.8;
+}
+
+#login-panel,#top-panel{
+    /*display: none;*/
+
+    position: absolute;
+    float: left;
+    top:0;
+    bottom:0;
+    width:100%;
+    border:0;
+    padding:0;
+    z-index: 25;
+    background-color: #eee;
+}
+
+#top-panel{
+    /*position: fixed;*/
+    background: transparent;
+    z-index: 30;
+}
+
+#top-panel .backdrop, #top-panel .popup{
+    background-color: #fff;
+    opacity: 0.7;
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:100%;
+    overflow: hidden;
+    text-align: center;
+}
+#top-panel .popup{
+    background-color: transparent;
+    z-index: 2;
+    opacity: 1;
+}
+#login-panel .content, #top-panel .content{
+    margin-top: 52px;
+    padding: 10px;
+}
+
+#batman-toolbar{
+    position: absolute;
+    float: left;
+    bottom:0;
+    width:100%;
+    border:0;
+    padding:0;
+    z-index: 24;
+    background-color: #333;
+    height: 42px;
+    text-align: center;
+}
+
+#batman-toolbar .btn{
+    /*height: 40px;*/
+    background-color: transparent;
+    /*font-size: 20px;*/
+}
+
+#batman-toolbar .butbar{
+    margin:0;
+    padding: 0;
+    border:1px solid #444;
+    font-size: 20px;
+}
+#batman-toolbar .butbar > li {
+    float: left;
+    list-style: none;
+    width: 32%;
+    border:0;
+    height:40px;
+    margin: 5px 0 0 0;
+    line-height: 38px;
+}
+
+
+
+#batman-toolbar .butbar > li > a{
+    color: #fff;
+    display: block;
+    border-right:1px solid #Fdd;
+    height: 38px;
+}
+
+#batman-toolbar .butbar > li.active .glyphicon{
+    color: #A1D2FC;
+}
+
+#form-panel{
+    display: none;
+
+    position: absolute;
+    float: left;
+    bottom:44px;
+    width:100%;
+    border:0;
+    padding:0;
+    z-index: 2;
+    background-color: #333;
+    top:0;
+
+}
+
+#form-panel .form-submit-toolbar{
+    position: absolute;
+    float: left;
+    height:40px;
+    bottom:0;
+    width:100%;
+    border:0;
+    padding:0;
+    text-align: center;
+    padding: 0 2px;
+    /*z-index: 2;*/
+    display: none;
+}
+
+#form-panel .form-controls{
+    background-color: #f5f5f5;
+    position: absolute;
+    float: left;
+    top:0;
+    /*bottom:42px;*/
+    bottom: 0;
+    width:100%;
+    border:0;
+    padding:0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding:0 4px;
+}
+
+.form-controls input{
+    margin-bottom: 6px;
+}

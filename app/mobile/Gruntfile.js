@@ -71,7 +71,7 @@ module.exports = function (grunt) {
                 options: {
                     sizes: [
                         {
-                            width: 320,
+                            width: 320
                         },
                         {
                             width: 640
@@ -408,6 +408,25 @@ module.exports = function (grunt) {
                 'svgmin',
                 'htmlmin'
             ]
+        },
+        less: {
+            dev: {
+//                options: {
+//                    paths: ["assets/css"]
+//                },
+                files: {
+                    "<%= yeoman.app %>/styles/vendor/bootstrap/bootstrap.css": "<%= yeoman.app %>/bower_components/bootstrap/less/bootstrap.less"
+                }
+            },
+            prod: {
+                options: {
+                    paths: ["assets/css"],
+                    yuicompress: true
+                },
+                files: {
+                    "path/to/result.css": "path/to/source.less"
+                }
+            }
         }
     });
 
@@ -437,10 +456,11 @@ module.exports = function (grunt) {
         grunt.task.run([
             'copy:backup',
             'clean:dist',
+            'less:dev',
             'useminPrepare',
             'concurrent:dist',
             'cssmin',
-            'responsive_images:dev',
+            //'responsive_images:dev',
             'concat',
             'uglify',
             'copy',

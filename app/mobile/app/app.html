@@ -6,232 +6,25 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
         <title>{{title}}</title>
         <base href="{{base}}" target="_blank">
         <meta name="description" content="">
-        <!--<meta name="viewport" content="width=device-width">-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
 
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
         <link rel="stylesheet" href="styles/main.css">
+        <!-- build:css styles/vendors.css -->
+        <link rel="stylesheet" href="styles/vendor/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+        <!-- endbuild -->
+
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
-
-        <!-- build:css styles/vendor/bootstrap.css -->
-        <link rel="stylesheet" href="styles/vendor/bootstrap/bootstrap.css">
-        <!-- endbuild -->
-
-        <!-- build:css styles/vendor/leaflet.css -->
-        <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
         <!-- endbuild -->
 </head>
     <body>
 
     <!-- Page content of course! -->
-    <!-- Custom styles for this template -->
-    <style>
-        /* Move down content because we have a fixed navbar that is 50px tall */
-    body {
-        /*padding-top: 0px;*/
-        padding-bottom: 70px;
-    }
-
-        /* Set widths on the navbar form inputs since otherwise they're 100% wide */
-    .navbar-form input[type="text"],
-    .navbar-form input[type="password"] {
-        width: 180px;
-    }
-
-        /* Wrapping element */
-        /* Set some basic padding to keep content from hitting the edges */
-    .body-content {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-
-        /* Responsive: Portrait tablets and up */
-    @media screen and (min-width: 768px) {
-        /* Remove padding from wrapping element since we kick in the grid classes here */
-        .body-content {
-            padding: 0;
-        }
-
-    }
-    .bottom-nav .navbar .nav{
-        float:left;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-    .bottom-nav .navbar .nav > li {
-        float: left;
-    }
-
-    .test{
-        bottom: 0;
-        margin-bottom: 0;
-        position: fixed;
-        right: 0;
-        left: 0;
-        /*z-index: 3;*/
-        border-radius: 0;
-        height:50px;
-        width: 100%;
-        background-color: #222;
-        text-align: center;
-    }
-
-
-    .leaflet-container .leaflet-control-attribution{
-        font-size: 8px;
-    }
-    #map-panel{
-        /*display: none;*/
-        z-index: 1;
-    }
-
-    .map-wrapper .crosshair {
-        position: absolute;
-        width: 65px;
-        height: 65px;
-        background: transparent url(images/crosshair.png) 0 0 no-repeat scroll;
-        top: 50%;
-        left: 50%;
-        margin: -32.5px 0 0 -32.5px;
-        pointer-events: none;
-        z-index: 2;
-        opacity: 0.8;
-    }
-
-    #login-panel,#top-panel{
-        /*display: none;*/
-
-        position: absolute;
-        float: left;
-        top:0;
-        bottom:0;
-        width:100%;
-        border:0;
-        padding:0;
-        z-index: 25;
-        background-color: #eee;
-    }
-
-    #top-panel{
-        /*position: fixed;*/
-        background: transparent;
-        z-index: 30;
-    }
-
-    #top-panel .backdrop, #top-panel .popup{
-        background-color: #fff;
-        opacity: 0.7;
-        position:absolute;
-        top:0;
-        bottom:0;
-        width:100%;
-        overflow: hidden;
-        text-align: center;
-    }
-    #top-panel .popup{
-        background-color: transparent;
-        z-index: 2;
-        opacity: 1;
-    }
-    #login-panel .content, #top-panel .content{
-        margin-top: 52px;
-        padding: 10px;
-    }
-
-    #batman-toolbar{
-        position: absolute;
-        float: left;
-        bottom:0;
-        width:100%;
-        border:0;
-        padding:0;
-        z-index: 24;
-        background-color: #333;
-        height: 50px;
-        text-align: center;
-    }
-
-    #batman-toolbar .btn{
-        /*height: 40px;*/
-        background-color: transparent;
-        /*font-size: 20px;*/
-    }
-
-    #batman-toolbar .butbar{
-        margin:0;
-        padding: 0;
-        border:1px solid #444;
-        font-size: 20px;
-    }
-    #batman-toolbar .butbar > li {
-        float: left;
-        list-style: none;
-        width: 32%;
-        border:0;
-        height:40px;
-        margin: 5px 0 0 0;
-        line-height: 38px;
-    }
-    #batman-toolbar .butbar > li > a{
-        color: #fff;
-        display: block;
-        border-right:1px solid #Fdd;
-        height: 38px;
-    }
-
-    #form-panel{
-        display: none;
-
-        position: absolute;
-        float: left;
-        bottom:50px;
-        width:100%;
-        border:0;
-        padding:0;
-        z-index: 2;
-        background-color: #333;
-        top:0;
-
-    }
-
-    #form-panel .form-submit-toolbar{
-        position: absolute;
-        float: left;
-        height:40px;
-        bottom:0;
-        width:100%;
-        border:0;
-        padding:0;
-        text-align: center;
-        padding: 0 2px;
-        /*z-index: 2;*/
-        display: none;
-    }
-
-    #form-panel .form-controls{
-        background-color: #f5f5f5;
-        position: absolute;
-        float: left;
-        top:0;
-        /*bottom:42px;*/
-        bottom: 0;
-        width:100%;
-        border:0;
-        padding:0;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        padding:0 4px;
-    }
-
-    .form-controls input{
-        margin-bottom: 6px;
-    }
-    </style>
 
     <div id="top-panel" style="display:none;">
         <div class="popup">
@@ -253,7 +46,7 @@
 
     <div id="login-panel">
         <div class="logo-login" style="position:absolute; top:4px; left:50%;margin-left:-100px">
-            <img src="images/0d61a820.bat-logo.png" style="" alt="Chauve-souris">
+            <img src="images/bat-logo.png" style="" alt="Chauve-souris">
         </div>
         <div class="content" style="margin-top: 52px">
             <div class="panel panel-default">
@@ -289,7 +82,7 @@
     <div id="batman-toolbar">
         <ul class="butbar">
             <li style="width: 2%"></li>
-            <li><a href="#" title="Observations"><span class="glyphicon glyphicon-map-marker"></span></a></li>
+            <li class="active"><a href="#" title="Observations"><span class="glyphicon glyphicon-map-marker"></span></a></li>
             <li><a href="#" title="Profil"><span class="glyphicon glyphicon-user"></span></a></li>
             <li><a href="#" style="border-right: none" title="À propos"><span class="glyphicon glyphicon-info-sign"></span></a></li>
         </ul>

@@ -1,0 +1,1 @@
+[{"domain":"127.0.0.1","httponly":true,"name":"AuthSession","path":"/","secure":false,"value":"c3RlZmxlZjo1MjcxN0M4QjoU7mOKEqQM5oC1a9iplWrh8RfMcg"},{"domain":"127.0.0.1","httponly":true,"name":"connect.sid","path":"/","secure":false,"value":"s%3AEUsJMjZxFSCifdCOIdJuqtSd.PgGY%2BbLBI%2B9jtwyToqP0PeSJPSRJfJMvzVy6zeDRUSs"}]

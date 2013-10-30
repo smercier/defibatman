@@ -45,7 +45,8 @@
 exports.get_site_by_id = function (req, res) {
     var auth = req.cookies['AuthSession'],
         batman,
-        siteId;
+        siteId,
+        output;
 
     res.set({'Content-Type': 'application/json'});
 
@@ -58,16 +59,23 @@ exports.get_site_by_id = function (req, res) {
     batman.get(siteId, {}, function(err, body) {
 
         if (err) {
-            var output = {
+            output = {
                 status: "err",
-                code: 401,
+                code: 404,
                 msg: err.reason
             };
-            res.send(401, output);
+            res.send(200, output);
             return;
         }
+        
+        output = {
+            status: "ok",
+            code: 200,
+            features: [body]
+        };
+
         console.log(body);
-        res.send(200, body);
+        res.send(200, output);
     });
 };
 // ***
@@ -117,7 +125,8 @@ exports.get_sites = function(req, res){
 
     var auth = req.cookies['AuthSession'],
         batman,
-        features = [];
+        features = [],
+        output;
 
     res.set({'Content-Type': 'application/json'});
 
@@ -127,13 +136,20 @@ exports.get_sites = function(req, res){
     batman = require('nano')({ url : 'http://localhost:5984/batman', cookie: 'AuthSession=' + auth });
 
     batman.view('cs_sites', 'all', function(err, body) {
-        if (err) { res.send(401, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
+        if (err) { res.send(500, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
 
         body.rows.forEach(function(doc) {
             console.log(doc.value);
             features.push(doc.value);
         });
-        res.send(200, features);
+
+        output = {
+            status: "ok",
+            code: 200,
+            'features': features
+        };
+        
+        res.send(200, output);
     });
 };
 // ***
@@ -159,9 +175,12 @@ exports.add_site =function(req, res){
         batman,
         feature;
 
-    req.accepts('application/json');
+    //req.accepts('application/json');
+    console.log("#############################");
     console.log(req.body);
-    if (!req.body.site) {res.send(401, '{"status":"err","code":401,"msg":"Aucun document site."}'); return; }
+
+    res.set({'Content-Type': 'application/json'});
+    if (!req.body.site) {res.send(400, '{"status":"err","code":401,"msg":"Aucun document site."}'); return; }
     console.log(req.body.site);
     feature = req.body.site;
 
@@ -177,9 +196,11 @@ exports.add_site =function(req, res){
     feature.properties.created_at = Date.now();
 
     batman.insert(feature, null, function(err, body) {
-        if (err) { res.send(401, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
+        if (err) { res.send(500, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
 
         console.log(body);
+        body.status = 'ok';
+        body.code = 200;
         res.send(200, body);
     });
 };

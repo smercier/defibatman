@@ -41,4 +41,8 @@ On a eu quelques contraintes du donneur d'ouvrage:
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">
 <img alt="Licence Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" />
+<<<<<<< HEAD
 </a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a>.
+=======
+</a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a>.
+>>>>>>> remotes/master_upstream/master

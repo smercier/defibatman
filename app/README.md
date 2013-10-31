@@ -114,6 +114,17 @@ Construire l'application serveur(build):
 $ grunt build
 ```
 
+***
+######**Nouveau!**
+**Installation rapide**
+
+Pour effectuer le build du frontend et le monter dans le backend d'une ligne de commande:
+
+``` sh
+$ grunt run
+```
+***
+
 **Configuration CouchDB**
 
 Ce script va construire votre base de données, vos vues, votre sécurité et ajoutera quelques documents.    
@@ -125,6 +136,20 @@ Construire la base documentaire:
 ``` sh
 $ grunt couch
 ```
+
+***
+######**Nouveau!**
+**Configurer CouchDB**
+
+Vous pouvez configurer CouchDB via ligne de commande, mais vous devez avant tout vérifier que tout est conforme dans le fichier models/couch/batman/config.json:
+
+``` sh
+$ grunt couch-config
+```
+
+*Le mot de passe pour robin: hood*    
+À changer bien entendu.
+***
 
 
 Votre application est maintenant installée!
@@ -251,4 +276,4 @@ Vous désirez contribuer à la suite du projet? Super! Juste à faire un *fork* 
 
 > <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">
 > <img alt="Licence Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" />
-> </a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a>.
+> </a><br />Cette application est mise à disposition selon les termes de la <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.fr">Licence Creative Commons Attribution -  Partage dans les Mêmes Conditions 3.0 non transposé</a>

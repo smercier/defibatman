@@ -84,13 +84,18 @@ body {
     position: absolute;
     width: 65px;
     height: 65px;
-    background: transparent url('/images/crosshair.png') 0 0 no-repeat scroll;
+    /*background: transparent url('/images/crosshair.png') 0 0 no-repeat scroll;*/
+    background: transparent url('/images/target-icon.svg') 0 0 no-repeat scroll;
+    background-size: 65px;
     top: 50%;
     left: 50%;
     margin: -32.5px 0 0 -32.5px;
     pointer-events: none;
     z-index: 2;
-    opacity: 0.8;
+    opacity: .8;
+
+    /*background-image: url('/styles/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular');*/
+    /*content: "\e108";*/
 }
 
 #login-panel,#top-panel{
@@ -105,6 +110,18 @@ body {
     padding:0;
     z-index: 25;
     background-color: #eee;
+}
+
+.logo-login{
+    background: transparent url("/images/bat-pin.svg") 0 0 no-repeat;
+    background-size: 200px;
+    position:absolute; 
+    top:4px; 
+    left:50%;
+    margin-left:-100px;
+    width: 200px;
+    height: 70px;
+    opacity: .7;
 }
 
 #top-panel{
@@ -129,7 +146,7 @@ body {
     opacity: 1;
 }
 #login-panel .content, #top-panel .content{
-    margin-top: 52px;
+    margin-top: 72px;
     padding: 10px;
 }
 
@@ -227,4 +244,45 @@ body {
 
 .form-controls input{
     margin-bottom: 6px;
+}
+/*-----------------*/
+@font-face {
+    font-family: 'OpenSansRegular';
+    src: url('fonts/opensans/OpenSans-Regular-webfont.eot');
+    src: url('fonts/opensans/OpenSans-Regular-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/opensans/OpenSans-Regular-webfont.woff') format('woff'), url('fonts/opensans/OpenSans-Regular-webfont.ttf') format('truetype'), url('fonts/opensans/OpenSans-Regular-webfont.svg#OpenSansRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSansItalic';
+    src: url('fonts/opensans/OpenSans-Italic-webfont.eot');
+    src: url('fonts/opensans/OpenSans-Italic-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/opensans/OpenSans-Italic-webfont.woff') format('woff'), url('fonts/opensans/OpenSans-Italic-webfont.ttf') format('truetype'), url('fonts/opensans/OpenSans-Italic-webfont.svg#OpenSansItalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSansBold';
+    src: url('fonts/opensans/OpenSans-Bold-webfont.eot');
+    src: url('fonts/opensans/OpenSans-Bold-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/opensans/OpenSans-Bold-webfont.woff') format('woff'), url('fonts/opensans/OpenSans-Bold-webfont.ttf') format('truetype'), url('fonts/opensans/OpenSans-Bold-webfont.svg#OpenSansBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    font-family: "OpenSansRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.btn {
+    font-family: 'OpenSansBold';
+}
+.bold {
+    font-family: 'OpenSansBold';
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+    font-family: 'OpenSansBold';
 }

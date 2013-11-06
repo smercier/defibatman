@@ -61,10 +61,11 @@ exports.get_site_by_id = function (req, res) {
         if (err) {
             output = {
                 status: "err",
-                code: 404,
-                msg: err.reason
+                code: err.status_code,
+                msg: err.reason +": "+err.error
             };
-            res.send(200, output);
+            console.log(err);
+            res.send(err.status_code, output);
             return;
         }
         
@@ -134,9 +135,8 @@ exports.get_sites = function(req, res){
     if (!auth) { res.send(401, '{"status":"err","code":401,"msg":"Unauthorized."}'); return; }
 
     batman = require('nano')({ url : 'http://localhost:5984/batman', cookie: 'AuthSession=' + auth });
-
     batman.view('cs_sites', 'all', function(err, body) {
-        if (err) { res.send(500, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
+        if (err) { res.send(err.status_code, '{"status":"err","code":401,"msg":"' + err.reason + '","origin":"nano"}'); return; }
 
         body.rows.forEach(function(doc) {
             console.log(doc.value);
@@ -305,3 +305,32 @@ exports.delete_site = function(req, res){
     });
 };
 // ***
+
+
+exports.get_sites_open = function(req, res){
+
+    var auth = req.cookies['AuthSession'],
+        batman,
+        features = [],
+        output;
+
+    res.set({'Content-Type': 'application/json'});
+
+    batman = require('nano')({ url : 'http://robin:hood@localhost:5984/batman'});
+    batman.view('cs_sites', 'all', function(err, body) {
+        if (err) { res.send(err.status_code, '{"status":"err","code":401,"msg":"' + err.reason + '","origin":"nano"}'); return; }
+
+        body.rows.forEach(function(doc) {
+            console.log(doc.value);
+            features.push(doc.value);
+        });
+
+        output = {
+            status: "ok",
+            code: 200,
+            'features': features
+        };
+
+        res.send(200, output);
+    });
+};

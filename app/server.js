@@ -20,13 +20,14 @@ var  express = require('express')
     ,auth = require('./routes/auth') 
     ,http = require('http')
     ,path = require('path')
+    ,fs = require('fs')
     ,expressWinston = require('express-winston')
     ,winston = require('winston')
     ,logTransports = []
     ,errorsTransports = []
-    //,nconf = require('nconf')
-    ,fs = require('fs')
+    ,uploadLimit = 5 * 1024 * 1024
     ,expressLogFile = fs.createWriteStream('./logs/server.log', {flags: 'a'})
+    ,server
     ,app = express();
 
 app.configure('development',function(){
@@ -59,11 +60,21 @@ app.engine('hjs',  require('hjs').renderFile);
 app.engine('html',  require('hjs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
 
+//DEBUG ONLY
+consoleHeaders = function(req, res, next){
+
+        console.log("**********");
+        console.log("** "+ req.get('content-type') +" **");
+        console.log("** "+ req.get('Content-Type') +" **");
+        console.log("**********");  
+    next();
+}
+
 //Middleware Stack
-//app.use(express.logger('dev'))
 app.use(express.logger({stream: expressLogFile}))
-   .use(express.json())
+   .use(express.json({limit:uploadLimit}))
    .use(express.urlencoded())
+   //.use(consoleHeaders)
    .use(express.methodOverride())
    .use(express.cookieParser('jhwger98qwehewkjr#$#%^#____'))
    .use(express.session())
@@ -77,65 +88,48 @@ app.use(express.logger({stream: expressLogFile}))
    .use(expressWinston.errorLogger({transports: errorsTransports }));
 // ***
 
-app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-// #####**Multipart/form-data handler**   
-// ####(**uploads**)
-var upload = function(req, res) {
-        var form = new formidable.IncomingForm;
-        form.keepExtensions = true;
-        form.uploadDir = path.join(__dirname, '/public/uploads');
-
-        form.parse(req, function(err, fields, files){
-            if (err) return res.end('You found error');
-            //do something with files.image etc
-            console.log(files.image);
-        });
-
-        form.on('progress', function(bytesReceived, bytesExpected) {
-            console.log(bytesReceived + ' ' + bytesExpected);
-        });
-
-        form.on('error', function(err) {
-            res.writeHead(200, {'content-type': 'text/plain'});
-            res.end('error:\n\n'+util.inspect(err));
-        });
-        res.end('Done');
-    };
-// ***
-
-
 // ####**Error Handling**
-//    > Terminal:
-//        >
-//    >     $ NODE_ENV=prod nodemon app.js
-    app.use(function(err, req, res, next) {
-        //do logging and user-friendly error message display
-        console.log(err);
-        res
-            .set({'Content-Type': 'application/json'})
-            .send(err.status, {
+app.use(function(err, req, res, next) {
+    //do logging and user-friendly error message display
+    console.log("*****************");
+    console.log(err);
+    if(err.status){
+        console.log("*################");
+        //res.set({'Content-Type': 'application/json'});
+        res.setHeader('Content-Type', 'application/json');
+        res.statusCode = err.status;
+        res.end(JSON.stringify({
                 code:err.status,
                 msg: err.message,
                 status:'err',
                 stack:err.stack
-            });
-        next();
-    });
+            }));
+    }
+});
 // ***
 
 // ###**404**   
 // **End of Middleware Stack**
 app.use(function(req, res, next){
     //res.send(404, 'BATMAN 404 !');
-    console.log("EOL");
+    console.log("404 EOL");
     //Render
-    res.send(404,"END OF LINE");
-    //res.render('../dist/404.html',{});
+    //var accept = req.get()
+    
+    if( req.get('content-type') == 'application/json'){
+        res.setHeader('Content-Type', 'application/json');
+        res.statusCode = 404;
+        res.end(JSON.stringify({
+            code:404,
+            msg: "URI non disponible.",
+            status:'err'
+        }));
+    }else{
+        //res.send(404,"END OF LINE [404]");
+        //res.statusCode = 404;
+        res.render('../dist/404.html',{});
+    }
 });
-
 
 // ***
 // ###**Routes**
@@ -145,6 +139,7 @@ app.use(function(req, res, next){
 //CRUD
 app.get('/api/site/:id', api.get_site_by_id);
 app.get('/api/site', api.get_sites);
+app.get('/api/site_open', api.get_sites_open);
 app.post('/api/site', api.add_site);
 app.put('/api/site/:id/:rev', api.update_site);
 app.delete('/api/site/:id/:rev', api.delete_site);
@@ -153,6 +148,7 @@ app.delete('/api/site/:id/:rev', api.delete_site);
 app.post('/api/login', auth.login);
 app.get('/api/logout', auth.logout);
 app.get('/api/admin', auth.admin);
+app.get('/api/status', auth.status);
 // ***
 
 // ####**/ aka HOME (GET)**
@@ -192,9 +188,16 @@ app.get('/error', function(req, res, next) {
 function start() {
     //routes.setup(app, handlers);
     var port = process.env.PORT || 3000;
-    app.listen(port);
+    server = app.listen(port);
     console.log("Express server listening on port %d in %s mode", port, app.settings.env);
 }
+
+function stop() {
+    server.close();
+    //process.exit(1);
+}
+
 // *******************************************************
 exports.start = start;
+exports.stop = stop;
 exports.app = app;

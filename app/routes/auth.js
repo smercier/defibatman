@@ -89,3 +89,53 @@ exports.admin =  function (req, res) {
     //TODO
 };
 // ***
+
+exports.status = function(req, res) {
+
+    var  auth = req.cookies['AuthSession'] || null
+        ,nano = require('nano')({
+            url: 'http://localhost:5984',
+            cookie: 'AuthSession=' + auth
+            })
+        ,user;
+    
+    res.set({'Content-Type': 'application/json'});
+    //Auth Check
+    if (!auth) {
+        res.send(401, '{"status":"err","code":401,"msg":"Unauthorized"}');
+        return;
+    }
+    
+    //==========
+    nano.request({
+            method: "GET",
+            db: "_session"
+        },
+        function (err, body, headers) {
+            if (err) { res.send(401, '{"status":"err","code":401,"msg":"' + err.reason + '"}'); return; }
+
+            //Send CouchDB's cookie right on through to the client
+            // *The CouchDB cookie name is AuthSession*
+            if (headers && headers['set-cookie']) {
+                res.cookie(headers['set-cookie']);
+            }
+
+            console.log(body);
+            //Augmenting res with roles.
+            //res.send(200,body);
+            
+            res.send(200, '{"status":"ok","code":200,"msg":"LOGGED_IN","name":"'+body.userCtx.name+'","role":'+ JSON.stringify( body.userCtx.roles ) +'}');
+        });
+
+    //==========
+
+//    
+//    user = {
+//        status: 'ok',
+//        code: 200,
+//        msg: 'Authorize',
+//        logged_in_email: req.session.user || null
+//    };
+//    
+//    res.send(200, JSON.stringify(user));
+};

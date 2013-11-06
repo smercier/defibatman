@@ -104,6 +104,30 @@ module.exports = function (grunt) {
                 },
                 src: ['mobile/Gruntfile.js','Gruntfile.js']
             }
+        },
+        prompt: {
+            mochacli: {
+                options: {
+                    questions: [
+                        {
+                            config: 'mochacli.options.reporter',
+                            type: 'list',
+                            message: 'Which Mocha reporter would you like to use?',
+                            default: 'spec',
+                            choices: ['dot', 'spec', 'nyan', 'TAP', 'landing', 'list',
+                                'progress', 'json', 'JSONconv', 'HTMLconv', 'min', 'doc']
+                        }
+                    ]
+                }
+            }
+        },
+        mochacli: {
+            options: {
+                require: ['should'],
+                reporter: 'nyan',
+                bail: true
+            },
+            all: ['test/m-api.js']
         }
  
     });
@@ -140,6 +164,13 @@ module.exports = function (grunt) {
     grunt.registerTask('run', 'Run Grunt Builds',
         [
             'run_grunt'
+        ]
+    );
+
+    grunt.registerTask('q', 'Test Prompt',
+        [
+            'prompt:mochacli',
+            'mochacli'
         ]
     );
 };

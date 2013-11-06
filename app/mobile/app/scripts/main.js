@@ -1,6 +1,7 @@
+var batman_api,map;
 $(document).ready(function() {
     L.Icon.Default.imagePath = '/dist/images';
-    var map = new L.Map('map-canvas',{'scrollWheelZoom':false,minZoom:9, maxZoom:17});
+    map = new L.Map('map-canvas',{'scrollWheelZoom':false,minZoom:9, maxZoom:17});
     map.attributionControl.setPrefix('');
 
     //Si jamais nous avons besoin des clusters pour afficher les sites
@@ -38,14 +39,6 @@ $(document).ready(function() {
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
     map.locate({watch: false, locate: true, setView: true, enableHighAccuracy:true});//,timeout:15000,maximumAge:20000});
-
-    $("input[type=file]").change(function(){
-        var file = $("input[type=file]")[0].files[0];
-        alert(file.name + "\n" +
-            file.type + "\n" +
-            file.size + "\n" +
-            file.lastModifiedDate);
-    });
 
     var site_model = {
         "type": "Feature",
@@ -105,16 +98,34 @@ $(document).ready(function() {
     ];
 
     // ## batman_api
-    var batman_api = (function($){
+     batman_api = (function($){
 
         var _url = "http://127.0.0.1:3000/api/";
-        var _formId = "cs_form";
+        //var _url = "http://192.168.1.102:3000/api/";
+        var _formId = "cs-form";
         var _user = null;
         var _LatLng = {};
+        var _img = null;
+         
         var api = {
+            getUrl: function(){
+                return _url;
+            },
+            getImage: function(){
+                return _img;
+            },
+            setImage: function(img){
+                 _img = img;
+                console.log(img);
+                return _img;
+            },
+            clearImage: function(){
+                this.setImage(null);
+            },
             add: function(){
                 var _self = this;
                 console.log(_url);
+
                 $.ajax({
                     url: _url + "site/",
                     type: 'POST',
@@ -141,7 +152,10 @@ $(document).ready(function() {
                 var _self = this;
                 $.ajax({
                     url: _url + "site/" +_id +"/"+_rev,
-                    type: 'PUT'
+                    type: 'PUT',
+                    contentType: 'application/json',
+                    data: '{"site":'+JSON.stringify(this.formToJson())+'}',
+                    dataType: 'json'
                 }).then(
                     function(rsp){
                         console.info("== update done ==");
@@ -187,7 +201,8 @@ $(document).ready(function() {
                 $.ajax({
                     url: _url + "site/"+_id,
                     type: 'GET',
-                    contentType: 'application/json'
+                    contentType: 'application/json'//,
+                   // dataType: 'json'
                 }).then(
                     function(rsp){
                         console.info("== get done ==");
@@ -239,8 +254,8 @@ $(document).ready(function() {
             },
             login:function(){
                 console.info("LOGIN SUBMIT");
-                this._user = $("#inputUsername").val();
-                var _psw = $("#inputPassword").val();
+                this._user = $("#input-username").val();
+                var _psw = $("#input-password").val();
                 var _self = this;
                 $.ajax({
                     url: _url + "login/",
@@ -287,6 +302,32 @@ $(document).ready(function() {
                     }
                 )
             },
+            userStatus:function(){
+                var _self = this;
+                $.ajax({
+                    url: _url + "status",
+                    type: 'GET',
+                    contentType: 'application/json'
+                }).then(
+                    function(rsp){
+                        console.info("== _loged ==");
+                        console.log(rsp);
+                        _self.closeLoginPanel();
+                    },
+                    function(e){
+                        console.error("== _status fail ==");
+                        console.log(e);
+                        console.log(e.status);
+                        if(e.status == 0){
+                            _self.showAlert("Serveur Down ou introuvable",0);
+                            return;
+                        }
+                        _self.showLoginPanel();
+                        var infos = jQuery.parseJSON(e.responseText);
+                        _self.showAlert(infos.msg,infos.code);
+                    }
+                )
+            },
             signup:function(){
                 // TODO
             },
@@ -311,7 +352,10 @@ $(document).ready(function() {
                 //parse Form
                 var values = {};
                 var model = site_model;
-                var serialized = $('#cs_form').serializeArray();
+                var serialized = $('#cs-form').serializeArray();
+                var latlng;
+                var _img = this.getImage();
+                
                 $.each(serialized,function(){
                     values[this.name] = this.value;
                 });
@@ -325,22 +369,38 @@ $(document).ready(function() {
                 //AUTO EMAIL
                 model.properties.obs_courriel = this._user;
 
-                // AUTO PASTE INFOS
-                if($('#_coord').is(':checked')){
-                    model.properties.prop_nom = $("#obs_nom").val();
-                    model.properties.prop_adresse= $("#obs_adresse").val();
-                    model.properties.prop_ville=$("#obs_ville").val();
-                    model.properties.prop_codepostal= $("#obs_codepostal").val();
-                    model.properties.prop_telephone= $("#obs_telephone").val();
+                //AUTO PASTE INFOS
+                if($('#cs-coord').is(':checked')){
+                    model.properties.prop_nom = $("#obs-nom").val();
+                    model.properties.prop_adresse= $("#obs-adresse").val();
+                    model.properties.prop_ville=$("#obs-ville").val();
+                    model.properties.prop_codepostal= $("#obs-codepostal").val();
+                    model.properties.prop_telephone= $("#obs-telephone").val();
                     model.properties.prop_courriel= this._user;
                 }
 
                 console.log(model);
 
-                // TODO GEO
+                //GEO
+                latlng = map.getCenter();
+                model.geometry.coordinates[0] = latlng.lng;
+                model.geometry.coordinates[1] = latlng.lat;
+                
+                //IMAGE
+                if(_img){
+                    model.properties.site_image = _img.name;
+                    
+                    var attachments = {};
+                    attachments[_img.name] = {
+                        "content-type" : _img.type,
+                        "data" : _img.b64
+                    }
+                    
+                    model._attachments = attachments;
+                }else{
+                    model.properties.site_image = null;
+                }
 
-
-                // TODO
                 return model;
             },
             showLoginPanel:function(){
@@ -380,7 +440,7 @@ $(document).ready(function() {
     })(jQuery);
 
     // ### DOM BINDINGS
-    $('#_coord').change(function(){
+    $('#cs-coord').change(function(){
         if($(this).is(':checked')){
             $("#prop").hide();
         }else{
@@ -388,18 +448,19 @@ $(document).ready(function() {
         }
     }).change();
 
-    $( "#cs_login" ).submit(function( event ) {
+    $( "#cs-login" ).submit(function( event ) {
         event.preventDefault();
         batman_api.login();
     });
 
-    $('#cs_connexion').bind(['click','submit'],function(){
-        $( "#cs_login" ).submit();
+    $('#cs-connexion').bind(['click','submit'],function(){
+        $( "#cs-login" ).submit();
     });
 
-    $( "#cs_form" ).submit(function( event ) {
-        batman_api.add();
+    $( "#cs-form" ).submit(function( event ) {
         event.preventDefault();
+        batman_api.add();
+        
     });
 
     $("#top-panel").hide();
@@ -412,4 +473,49 @@ $(document).ready(function() {
         .bind('click', function(){
             batman_api.closeFormPanel();
         });
+
+    $('#follow-switch').on('switch-change', function(e, data) {
+        console.log(data.value);
+        var serialized = $('input:checkbox').map(function() {
+            return { name: this.name, value: this.checked ? this.value : "false" };
+        });
+        console.log(serialized);
+        
+    });
+
+    $("input[type=file]").change(function(){
+        var file = $("input[type=file]")[0].files[0];
+        var imgInfos;
+
+        // Check for the various File API support.
+        if(!window.File || !window.FileReader || !window.FileList || !window.Blob){ 
+            batman_api.showAlert('The File APIs are not fully supported in this browser.');
+            return;
+        }
+        
+        if (file) {
+            imgInfos = {
+                name: file.name,
+                type: file.type,
+                size: file.size,
+                lastModifiedDate: file.lastModifiedDate,
+                b64: null
+            };
+            var reader = new FileReader();
+
+            reader.onload = function(readerEvt) {
+                var _img = imgInfos;
+                var binaryString = readerEvt.target.result;
+                _img.b64 = btoa(binaryString);
+                
+                batman_api.setImage(_img);
+                //TODO - HIDE Spinner
+            };
+
+            //TODO - SHOW Spinner
+            reader.readAsBinaryString(file);
+        }
+    });
+
+    batman_api.userStatus();
 });

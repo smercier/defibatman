@@ -6,18 +6,31 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+        
         <title>{{title}}</title>
         <base href="{{base}}" target="_blank">
-        <meta name="description" content="">
-        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">-->
-
-        <link rel="stylesheet" href="styles/main.css">
+        <meta name="description" content="Projet Batman, ....">
+        
+        <!--MOBILE-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        
+        <!--IOS-->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="Projet Batman">
+        <!-- iPhone (Retina) SPLASHSCREEN-->
+        <link href="apple-touch-startup-image-640x920.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+        
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+        
         <!-- build:css styles/vendors.css -->
         <link rel="stylesheet" href="styles/vendor/bootstrap/bootstrap.css">
+        <link rel="stylesheet" href="bower_components/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
         <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
         <!-- endbuild -->
 
+        <link rel="stylesheet" href="styles/main.css">
+        
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/modernizr/modernizr.js"></script>
         <!-- endbuild -->
@@ -45,29 +58,27 @@
     </div>
 
     <div id="login-panel">
-        <div class="logo-login" style="position:absolute; top:4px; left:50%;margin-left:-100px">
-            <img src="images/bat-logo.png" style="" alt="Chauve-souris">
-        </div>
-        <div class="content" style="margin-top: 52px">
+        <div class="logo-login"></div>
+        <div class="content">
             <div class="panel panel-default">
                 <div class="panel-heading" style="text-align: center">
-                    PROJET BATMAN <span style="font-size: .7em;">{{version}}</span>
+                   <strong>Défi Batman</strong><span style="font-size: .8em;"> v.{{version}}</span>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" id="cs_login" name="cs_login">
+                    <form class="form-horizontal" role="form" id="cs-login" name="cs-login">
                         <div class="well">
 
                             <div class="input-group input-group-large">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                <input type="text" class="form-control" id="inputUsername" placeholder="Courriel" value="steflef">
+                                <input type="text" class="form-control" id="input-username" name="inputUsername" placeholder="Courriel" value="steflef">
                             </div>
                             <div class="input-group input-group-large" style="margin-top: 8px">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                                <input type="password" class="form-control" id="inputPassword" placeholder="Mot de passe" value="test">
+                                <input type="password" class="form-control" id="input-password" name="inputPassword" placeholder="Mot de passe" value="test">
                             </div>
 
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block" onsubmit="return false;" id="cs_connexion">Se Connecter</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" onsubmit="return false;" id="cs-connexion">Se Connecter</button>
                         <hr>
                         <p>
                             <button type="button" class="btn btn-default btn-small">Créer un compte</button>
@@ -100,43 +111,40 @@
 
     <div id="form-panel">
         <div class="form-controls">
-            <form role="form" id="cs_form">
+            <form role="form" id="cs-form">
 
                 <div class="steps-site" style="margin-top: 8px;">
                     <p class="lead">Formulaire d'identification <buttton class="btn btn-default pull-right form-cancel"><span class="glyphicon glyphicon-map-marker"></span></buttton></p>
 
-                    <!--<hr>-->
-                    <strong>Estimation du nombre de chauves-souris</strong>
-                    <br>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="site_individus" value="1 - 5" checked="checked">
-                            1 - 5
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="site_individus"  value="6 - 20">
-                            6 - 20
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="site_individus" value="21 - 50">
-                            21 - 50
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="site_individus"  value="+ de 50">
-                            + de 50
-                        </label>
-                    </div>
                     <div>
-                        <label for="site_structure">
+                        <label for="site-structure">
+                            Nombre de chauves-souris
+                        </label>
+                        <br>
+                        <select name="site_individus" id="site-individus" required="required" class="form-control">
+                            <option value="Chalet">
+                                1 - 5
+                            </option>
+                            <option value="Entrepôt ou hangar">
+                                1 - 5
+                            </option>
+                            <option value="6 - 20">
+                                6 - 20
+                            </option>
+                            <option value="21 - 50">
+                                21 - 50
+                            </option>
+                            <option value="+ de 50">
+                                + de 50
+                            </option>
+                        </select>
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <label for="site-structure">
                             Site
                         </label>
-                        <select name="site_structure" id="site_structure" required="required">
+                        <br>
+                        <select name="site_structure" id="site-structure" required="required" class="form-control">
                             <option value="Chalet">
                                 Chalet
                             </option>
@@ -167,16 +175,17 @@
                             <option value="Arbre">
                                 Arbre
                             </option>
-                            <option value="Autre (précisez)">
-                                Autre (précisez)
+                            <option value="Autre">
+                                Autre
                             </option>
                         </select>
                     </div>
                     <div style="margin-top: 8px;">
-                        <label for="site_habitat">
+                        <label for="site-habitat">
                             Habitat
                         </label>
-                        <select name="site_habitat" id="site_habitat" required="required">
+                        <br>
+                        <select name="site_habitat" id="site-habitat" required="required" class="form-control">
                             <option value="Champs agricoles">
                                 Champs agricoles
                             </option>
@@ -212,8 +221,8 @@
                     <br>
                     <div class="form-group">
                         <span class="glyphicon glyphicon-camera"></span>
-                        <label for="site_image">Image (si disponible)</label>
-                        <input type="file" id="site_image" name="site_image" accept="image/*" capture="">
+                        <label for="site-image">Image (si disponible)</label>
+                        <input type="file" id="site-image" name="site_image" accept="image/*;capture=camera" class="form-control">
                     </div>
                     <hr>
                 </div>
@@ -221,25 +230,26 @@
                 <div class="steps-id">
                     <!--<p class="lead">Coordonnées</p>-->
                     <strong>Vos coordonnées (confidentiel et facultatif)</strong>
-                    <input type="text" class="form-control" id="obs_nom" name="obs_nom" placeholder="Nom">
-                    <input type="text" class="form-control" id="obs_adresse" name="obs_adresse" placeholder="Adresse">
-                    <input type="text" class="form-control" id="obs_ville" name="obs_ville" placeholder="Ville">
-                    <input type="text" class="form-control" id="obs_codepostal" name="obs_codepostal" placeholder="Code Postal">
-                    <input type="text" class="form-control" id="obs_tel" name="obs_telephone" placeholder="Téléphone">
+                    <input type="text" class="form-control" id="obs-nom" name="obs_nom" placeholder="Nom">
+                    <input type="text" class="form-control" id="obs-adresse" name="obs_adresse" placeholder="Adresse">
+                    <input type="text" class="form-control" id="obs-ville" name="obs_ville" placeholder="Ville">
+                    <input type="text" class="form-control" id="obs-codepostal" name="obs_codepostal" placeholder="Code Postal">
+                    <input type="text" class="form-control" id="obs-tel" name="obs_telephone" placeholder="Téléphone">
                     <br>
+                    
                     <strong>Propriétaire du site si connu</strong>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="same_coordinates" id="_coord" checked> Identique à vos coordonnées?
+                            <input type="checkbox" name="same_coordinates" id="cs-coord" checked> Identique à vos coordonnées?
                         </label>
                     </div>
                     <div id="prop">
-                        <input type="text" class="form-control" id="prop_nom" name="prop_nom" placeholder="Nom">
-                        <input type="text" class="form-control" id="prop_adresse" name="prop_adresse" placeholder="Adresse">
-                        <input type="text" class="form-control" id="prop_ville" name="prop_ville" placeholder="Ville">
-                        <input type="text" class="form-control" id="prop_codepostal" name="prop_codepostal" placeholder="Code Postal">
-                        <input type="text" class="form-control" id="prop_tel" name="prop_telephone" placeholder="Téléphone">
-                        <input type="text" class="form-control" id="prop_courriel" name="prop_courriel" placeholder="Courriel">
+                        <input type="text" class="form-control" id="prop-nom" name="prop_nom" placeholder="Nom">
+                        <input type="text" class="form-control" id="prop-adresse" name="prop_adresse" placeholder="Adresse">
+                        <input type="text" class="form-control" id="prop-ville" name="prop_ville" placeholder="Ville">
+                        <input type="text" class="form-control" id="prop-codepostal" name="prop_codepostal" placeholder="Code Postal">
+                        <input type="text" class="form-control" id="prop-tel" name="prop_telephone" placeholder="Téléphone">
+                        <input type="text" class="form-control" id="prop-courriel" name="prop_courriel" placeholder="Courriel">
                     </div>
                     <hr>
                 </div>
@@ -255,29 +265,34 @@
                     </em>
                     </small>
                     <br>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="suivi" value="Oui" checked="checked">
-                            Oui
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="suivi" value="Non">
-                            Non
-                        </label>
-                    </div>
-                    <div class="radio-inline">
-                        <label>
-                            <input type="radio" name="suivi" value="Je ne sais pas">
-                            Je ne sais pas
-                        </label>
-                    </div>
-                </div>
+                    <!--<div class="radio-inline">-->
+                        <!--<label>-->
+                            <!--<input type="radio" name="suivi" value="Oui" checked="checked">-->
+                            <!--Oui-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="radio-inline">-->
+                        <!--<label>-->
+                            <!--<input type="radio" name="suivi" value="Non">-->
+                            <!--Non-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="radio-inline">-->
+                        <!--<label>-->
+                            <!--<input type="radio" name="suivi" value="Je ne sais pas">-->
+                            <!--Je ne sais pas-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                <div class="form-group">
+                <div id="follow-switch" class="make-switch switch-small"  data-on-label="OUI" data-off-label="NON" tabindex="0">
+                    <input type="checkbox" name="suivi" id="suivi" checked>
+                </div>
+                    
+
+                <div class="form-group" style="margin-top:15px;">
                     <div class="col-lg-offset-2 col-lg-10">
-                        <button type="submit" class="btn btn-primary btn-block">Enregister <span class="glyphicon glyphicon-upload"></span></button>
+                        <button type="submit" id="cs-form-submit" class="btn btn-primary btn-block">Enregister <span class="glyphicon glyphicon-upload"></span></button>
                         <button type="button" class="btn btn-default btn-block form-cancel" style="margin-top: 8px;">Ne pas enregistrer <span class="glyphicon glyphicon-remove-circle"></span></button>
                     </div>
                 </div>
@@ -307,6 +322,7 @@
         <script src="bower_components/jquery/jquery.js"></script>
         <script src="scripts/vendor/bootstrap/bootstrap.js"></script>
         <script src="bower_components/leaflet/dist/leaflet.js"></script>
+        <script src="bower_components/bootstrap-switch/static/js/bootstrap-switch.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->
 
